@@ -7,7 +7,7 @@ import UserRegistration from 'src/components/Administration/UserRegistration';
 import AllServices from 'src/components/Administration/AllServices';
 
 /* ***Layouts**** */
-const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
+//const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
 const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
 
 /* ****Pages***** */
@@ -184,12 +184,12 @@ const FixidiLandingPage = Loadable(
   lazy(() => import('../components/Administration/FixidiLandingPage')),
 );
 
-const Router = [
-  {
+const router = createBrowserRouter ([
+ /*   {
     path: '/',
     element: <FullLayout />,
     children: [
-    /*   { path: '/', element: <Navigate to="/dashboards/modern" /> },
+      { path: '/', element: <Navigate to="/dashboards/modern" /> },
       { path: '/dashboards/modern', exact: true, element: <ModernDash /> },
       { path: '/dashboards/ecommerce', exact: true, element: <EcommerceDash /> },
       { path: '/apps/contacts', element: <Contacts /> },
@@ -290,43 +290,28 @@ const Router = [
       { path: '/mui-trees/simpletree/simpletree-expansion', element: <SimpletreeExpansion /> },
       { path: '/mui-trees/simpletree/simpletree-focus', element: <SimpletreeFocus /> },
       { path: '/mui-trees/simpletree/simpletree-items', element: <SimpletreeItems /> },
-      { path: '/mui-trees/simpletree/simpletree-selection', element: <SimpletreeSelection /> }, */
+      { path: '/mui-trees/simpletree/simpletree-selection', element: <SimpletreeSelection /> },
 
       { path: '*', element: <Navigate to="/auth/404" /> },
        
     ],
-  },
+  }, */
   {
-    path: '/',
-    element: <BlankLayout />,
-    children: [
-/*       { path: '/auth/404', element: <Error /> },
-      { path: '/auth/login', element: <Login /> },
-      { path: '/auth/login2', element: <Login2 /> },
-      { path: '/auth/register', element: <Register /> },
-      { path: '/auth/register2', element: <Register2 /> },
-      { path: '/auth/forgot-password', element: <ForgotPassword /> },
-      { path: '/auth/forgot-password2', element: <ForgotPassword2 /> },
-      { path: '/auth/two-steps', element: <TwoSteps /> },
-      { path: '/auth/two-steps2', element: <TwoSteps2 /> },
-      { path: '/auth/maintenance', element: <Maintenance /> },
-      { path: '/landingpage', element: <Landingpage /> },
-      { path: '/frontend-pages/homepage', element: <Homepage /> },
-      { path: '/frontend-pages/about', element: <About /> },
-      { path: '/frontend-pages/contact', element: <Contact /> },
-      { path: '/frontend-pages/portfolio', element: <Portfolio /> },
-      { path: '/frontend-pages/pricing', element: <PagePricing /> },
-      { path: '/frontend-pages/blog', element: <BlogPage /> },
-      { path: '/frontend-pages/blog/detail/:id', element: <BlogPost /> }, */
-      { path: '*', element: <Navigate to="/auth/404" /> },
-
-      { path: '/FixidiLandingPage', element: <FixidiLandingPage /> },
-     { path: '/user-registration', element: <UserRegistration /> },
-     { path: '/all-services', element: <AllServices /> },
-
-    ],
-  },
-];
-const router = createBrowserRouter(Router);
+  path: '/',
+  element: <FixidiLandingPage />,
+  children: [
+    { path: '*', element: <Navigate to="/auth/404" /> }
+  ]
+},
+{
+  path: '/user-registration',
+  element: <UserRegistration />
+},
+{
+  path: '/all-services',
+  element: <AllServices />
+}
+]);
+//const router = createBrowserRouter(Router);
 
 export default router;
