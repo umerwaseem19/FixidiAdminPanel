@@ -70,7 +70,7 @@ const FullLayout: FC = () => {
 
             <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>
               <ScrollToTop>
-                <Outlet />
+               {/*  <Outlet /> */}
               </ScrollToTop>
             </Box>
 
