@@ -6,6 +6,7 @@ import RTL from './layouts/full/shared/customizer/RTL';
 import { RouterProvider } from 'react-router';
 import router from './routes/Router';
 import { AppState } from './store/Store';
+import FixidiLandingPage from './components/Administration/FixidiLandingPage';
 
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <RTL direction={customizer.activeDir}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <FixidiLandingPage/>
+       {/*  <RouterProvider router={router} /> */}
       </RTL>
     </ThemeProvider>
   );
