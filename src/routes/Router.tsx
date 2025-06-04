@@ -298,7 +298,7 @@ const router = createBrowserRouter ([
   }, */
   {
   path: '/',
-  element: <Navigate to="/FixidiLandingPage" />,
+  element: <Navigate to="FixidiLandingPage" />,
   children: [
     { path: '*', element: <Navigate to="/auth/404" /> }
   ]

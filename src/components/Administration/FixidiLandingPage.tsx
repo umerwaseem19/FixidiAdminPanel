@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import {
   Box,
   Stack,
@@ -34,6 +34,19 @@ import HpHeader from '../frontend-pages/shared/header/HpHeader';
 import Footer from '../landingpage/footer/Footer';
 import ScrollToTop from '../frontend-pages/shared/scroll-to-top';
 import { useNavigate } from 'react-router';
+import BannerTopLeft from 'src/assets/images/frontend-pages/homepage/banner-top-left.svg';
+import BannerBottomPart from 'src/assets/images/frontend-pages/homepage/bottom-part.svg';
+import BannerTopRight from 'src/assets/images/frontend-pages/homepage/banner-top-right.svg';
+import { useMediaQuery } from '@mui/system';
+import { Reviews } from '@mui/icons-material';
+import DefendFocus from '../frontend-pages/homepage/defend-focus';
+import ExceptionalFeature from '../frontend-pages/homepage/exceptional-feature';
+import FAQ from '../frontend-pages/homepage/faq';
+import PowerfulDozens from '../frontend-pages/homepage/powerful-dozens';
+import C2a from '../frontend-pages/shared/c2a';
+import Leadership from '../frontend-pages/shared/leadership';
+import Pricing from '../frontend-pages/shared/pricing';
+import Features from '../landingpage/features/Features';
 
 const Frameworks = [
   {
@@ -88,7 +101,7 @@ const FixidiLandingPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [, setSelectedService] = useState<string | null>(null);
-
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
   const handleButtonClick = (fwName: string, userType: 'client' | 'professional') => {
     if (fwName === 'More') {
       navigate('/all-services');
@@ -127,6 +140,32 @@ const FixidiLandingPage = () => {
           }}
         >
           <Grid container spacing={3} justifyContent="center" mb={4}>
+            {lgUp ? (
+              <Grid
+                alignItems="end"
+                display="flex"
+                size={{
+                  xs: 12,
+                  lg: 2,
+                }}
+              >
+                <img
+                  src={BannerTopLeft}
+                  className="animted-img-2"
+                  alt="banner"
+                  width={360}
+                  height={200}
+                  style={{
+                    borderRadius: '16px',
+                    position: 'absolute',
+                    left: '24px',
+                    boxShadow: theme.shadows[10],
+                    height: 'auto',
+                    width: 'auto',
+                  }}
+                />
+              </Grid>
+            ) : null}
             <Grid
               textAlign="center"
               size={{
@@ -257,9 +296,56 @@ const FixidiLandingPage = () => {
                 </Typography>
               </Stack>
             </Grid>
+            {lgUp ? (
+              <Grid
+                alignItems="end"
+                display="flex"
+                size={{
+                  xs: 12,
+                  lg: 2,
+                }}
+              >
+                <img
+                  src={BannerTopRight}
+                  className="animted-img-2"
+                  alt="banner"
+                  width={350}
+                  height={220}
+                  style={{
+                    borderRadius: '16px',
+                    position: 'absolute',
+                    right: '24px',
+                    boxShadow: theme.shadows[10],
+                    height: 'auto',
+                    width: 'auto',
+                  }}
+                />
+              </Grid>
+            ) : null}
           </Grid>
+          {lgUp ? (
+            <img
+              src={BannerBottomPart}
+              alt="banner"
+              width={500}
+              height={300}
+              style={{
+                width: '100%',
+                marginBottom: '-11px',
+              }}
+            />
+          ) : null}
         </Container>
       </Box>
+      <Features />
+      <DefendFocus />
+      <Leadership />
+      <PowerfulDozens />
+      <Reviews />
+      <ExceptionalFeature />
+      <Pricing />
+      <FAQ />
+      <C2a />
       <Footer />
       <ScrollToTop />
     </>
