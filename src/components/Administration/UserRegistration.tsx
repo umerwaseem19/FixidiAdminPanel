@@ -207,7 +207,7 @@ const UserRegistration = () => {
                               value={values.area}
                              onChange={(_: React.SyntheticEvent, newValue: string | null) => {
                                 setFieldValue('area', newValue);
-                              }}
+                               }}
                               options={canadaAreas.map((option) => option.title)}
                               renderInput={(params) => (
                                 <TextField
