@@ -57,7 +57,7 @@ const FullLayout: FC = () => {
           {/* ------------------------------------------- */}
          {/*  {customizer.isHorizontal ? <HorizontalHeader /> : <Header />} */}
           {/* PageContent */}
-          {customizer.isHorizontal ? <Navigation /> : ''}
+{/*           {customizer.isHorizontal ? <Navigation /> : ''} */}
           <Container
             sx={{
               pt: '30px',
