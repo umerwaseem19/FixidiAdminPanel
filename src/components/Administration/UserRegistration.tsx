@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { MuiTelInput } from 'mui-tel-input';
 import houseServices from '../forms/form-elements/autoComplete/data';
 import { useNavigate, useLocation } from 'react-router';
-import apiService from 'src/api.service';
+/* import apiService from 'src/api.service'; */
 
 const canadaAreas = [
   { title: 'Toronto' },

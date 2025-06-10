@@ -34,9 +34,9 @@ import HpHeader from '../frontend-pages/shared/header/HpHeader';
 import Footer from '../landingpage/footer/Footer';
 import ScrollToTop from '../frontend-pages/shared/scroll-to-top';
 import { useNavigate } from 'react-router';
-import BannerTopLeft from 'src/assets/images/frontend-pages/homepage/banner-top-left.svg';
+/* import BannerTopLeft from 'src/assets/images/frontend-pages/homepage/banner-top-left.svg'; */
 import BannerBottomPart from 'src/assets/images/frontend-pages/homepage/bottom-part.svg';
-import BannerTopRight from 'src/assets/images/frontend-pages/homepage/banner-top-right.svg';
+/* import BannerTopRight from 'src/assets/images/frontend-pages/homepage/banner-top-right.svg'; */
 import { useMediaQuery } from '@mui/system';
 import { Reviews } from '@mui/icons-material';
 import DefendFocus from '../frontend-pages/homepage/defend-focus';
