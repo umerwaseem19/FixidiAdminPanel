@@ -3,11 +3,11 @@ import { styled, Container, Box, useTheme } from '@mui/material';
 import { useSelector } from 'src/store/Store';
 import { Outlet } from 'react-router';
 import { AppState } from 'src/store/Store';
-import Header from './vertical/header/Header';
+/* import Header from './vertical/header/Header'; */
 import Sidebar from './vertical/sidebar/Sidebar';
 import Customizer from './shared/customizer/Customizer';
-import Navigation from '../full/horizontal/navbar/Navigation';
-import HorizontalHeader from '../full/horizontal/header/Header';
+/* import Navigation from '../full/horizontal/navbar/Navigation';
+import HorizontalHeader from '../full/horizontal/header/Header'; */
 import ScrollToTop from '../../components/shared/ScrollToTop';
 import LoadingBar from '../../LoadingBar';
 
@@ -70,7 +70,7 @@ const FullLayout: FC = () => {
 
             <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>
               <ScrollToTop>
-               {/*  <Outlet /> */}
+                <Outlet />
               </ScrollToTop>
             </Box>
 

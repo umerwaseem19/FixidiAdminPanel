@@ -3,21 +3,21 @@ import SidebarItems from './SidebarItems';
 import Logo from '../../shared/logo/Logo';
 import { useSelector, useDispatch } from 'src/store/Store';
 import { hoverSidebar, toggleMobileSidebar } from 'src/store/customizer/CustomizerSlice';
-import Scrollbar from 'src/components/custom-scroll/Scrollbar';
-import { Profile } from './SidebarProfile/Profile';
+/* import Scrollbar from 'src/components/custom-scroll/Scrollbar';
+import { Profile } from './SidebarProfile/Profile'; */
 import { AppState } from 'src/store/Store';
 
 const Sidebar = () => {
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
   const customizer = useSelector((state: AppState) => state.customizer);
   const dispatch = useDispatch();
-  const theme = useTheme();
+/*   const theme = useTheme(); */
   const toggleWidth =
     customizer.isCollapse && !customizer.isSidebarHover
       ? customizer.MiniSidebarWidth
       : customizer.SidebarWidth;
 
-  const onHoverEnter = () => {
+/*   const onHoverEnter = () => {
     if (customizer.isCollapse) {
       dispatch(hoverSidebar(true));
     }
@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   const onHoverLeave = () => {
     dispatch(hoverSidebar(false));
-  };
+  }; */
 
   if (lgUp) {
     return (

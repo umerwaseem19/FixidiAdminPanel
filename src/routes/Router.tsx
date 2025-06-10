@@ -8,7 +8,7 @@ import AllServices from 'src/components/Administration/AllServices';
 
 /* ***Layouts**** */
 //const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
-const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
+/* const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout'))); */
 
 /* ****Pages***** */
 /* const ModernDash = Loadable(lazy(() => import('../views/dashboard/Modern')));
@@ -298,7 +298,7 @@ const router = createBrowserRouter ([
   }, */
   {
   path: '/',
-  element: <Navigate to="FixidiLandingPage" />,
+  element: <Navigate to="/FixidiLandingPage" />,
   children: [
     { path: '*', element: <Navigate to="/auth/404" /> }
   ]

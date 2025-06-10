@@ -46,7 +46,10 @@ const validationSchema = Yup.object().shape({
     .required('Rates are required'),
   area: Yup.string().required('Area is required'),
   expertise: Yup.string()
-     .oneOf(houseServices.map(service => service.title), 'Please select a valid expertise')
+    .oneOf(
+      houseServices.map((service) => service.title),
+      'Please select a valid expertise',
+    )
     .required('Expertise is required'),
 });
 
@@ -54,7 +57,7 @@ const UserRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {  userType, serviceType, frameworkId, houseServiceId } = location.state || {};
+  const { userType, serviceType, frameworkId, houseServiceId } = location.state || {};
 
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -112,17 +115,29 @@ const UserRegistration = () => {
                   }} */
                   onSubmit={async (values) => {
                     try {
+                      const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
                       const payload = {
                         ...values,
+                          phoneNumber: cleanedPhone,
                         serviceName: values.expertise, // extract title if backend expects a string
                       };
                       console.log('payload ==>', payload);
 
-                      const result = await apiService.addUser(payload);
-                      console.log('API Result ==>', result);
-
+                    /*   const result = await apiService.addUser(payload);
+                      console.log('API Result ==>', result); */
+                      await fetch(
+                        'https://script.google.com/macros/s/AKfycbxa38zs6vgfBUwoxXJUCbDfx-aqCs12PQiCsYrsdo7a8iLzrhsNEMtSR2Y3OXIKlP4p0g/exec',
+                        {
+                          method: 'POST',
+                          body: JSON.stringify(payload),
+                          mode: 'no-cors',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                        },
+                      );
                       // Check for conflict or error in response
-                      if (
+                     /*  if (
                         result?.status === 'CONFLICT' ||
                         result?.message === 'User already exists'
                       ) {
@@ -130,7 +145,7 @@ const UserRegistration = () => {
                         // Display this to the user if needed
                         return;
                       }
-
+ */
                       console.log('Submitted values ===>', values);
                       setOpenAlert(true); // Success message
                       setTimeout(() => navigate('/FixidiLandingPage'), 2000);
@@ -167,12 +182,12 @@ const UserRegistration = () => {
                               disableClearable
                               fullWidth
                               size="small"
-                              options={houseServices.map((option) => option.title)}
+                              options={houseServices.map((option) => option.title)} // options must be strings
                               value={values.expertise || ''}
-                              onChange={( newValue) => {
+                              onChange={(_, newValue) => {
                                 setFieldValue('expertise', newValue || '');
                               }}
-                              onInputChange={( newInputValue) => {
+                              onInputChange={(_, newInputValue) => {
                                 setFieldValue('expertise', newInputValue);
                               }}
                               renderInput={(params) => (
@@ -205,10 +220,13 @@ const UserRegistration = () => {
                               disableClearable
                               size="small"
                               value={values.area}
-                             onChange={(_: React.SyntheticEvent, newValue: string | null) => {
-                                setFieldValue('area', newValue);
-                               }}
                               options={canadaAreas.map((option) => option.title)}
+                              onChange={(_, newValue: string | null) => {
+                                setFieldValue('area', newValue || '');
+                              }}
+                                onInputChange={(_, newInputValue) => {
+    setFieldValue('area', newInputValue); // This is important!
+  }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}

@@ -140,32 +140,7 @@ const FixidiLandingPage = () => {
           }}
         >
           <Grid container spacing={3} justifyContent="center" mb={4}>
-            {lgUp ? (
-              <Grid
-                alignItems="end"
-                display="flex"
-                size={{
-                  xs: 12,
-                  lg: 2,
-                }}
-              >
-                <img
-                  src={BannerTopLeft}
-                  className="animted-img-2"
-                  alt="banner"
-                  width={360}
-                  height={200}
-                  style={{
-                    borderRadius: '16px',
-                    position: 'absolute',
-                    left: '24px',
-                    boxShadow: theme.shadows[10],
-                    height: 'auto',
-                    width: 'auto',
-                  }}
-                />
-              </Grid>
-            ) : null}
+         
             <Grid
               textAlign="center"
               size={{
@@ -296,32 +271,7 @@ const FixidiLandingPage = () => {
                 </Typography>
               </Stack>
             </Grid>
-            {lgUp ? (
-              <Grid
-                alignItems="end"
-                display="flex"
-                size={{
-                  xs: 12,
-                  lg: 2,
-                }}
-              >
-                <img
-                  src={BannerTopRight}
-                  className="animted-img-2"
-                  alt="banner"
-                  width={350}
-                  height={220}
-                  style={{
-                    borderRadius: '16px',
-                    position: 'absolute',
-                    right: '24px',
-                    boxShadow: theme.shadows[10],
-                    height: 'auto',
-                    width: 'auto',
-                  }}
-                />
-              </Grid>
-            ) : null}
+         
           </Grid>
           {lgUp ? (
             <img
