@@ -65,7 +65,7 @@ const UserRegistration = () => {
     <>
       <HpHeader />
 
-      <Box pt={3}>
+      <Box pt={3} mt={2}>
         <Container
           sx={{
             maxWidth: '1400px !important',

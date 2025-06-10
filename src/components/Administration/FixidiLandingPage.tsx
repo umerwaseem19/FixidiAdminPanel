@@ -31,7 +31,8 @@ import user3 from 'src/assets/images/profile/user-3.jpg';
 import houseServices from '../forms/form-elements/autoComplete/data';
 import CustomTextField from '../forms/theme-elements/CustomTextField';
 import HpHeader from '../frontend-pages/shared/header/HpHeader';
-import Footer from '../landingpage/footer/Footer';
+
+import Footer from 'src/components/frontend-pages/shared/footer';
 import ScrollToTop from '../frontend-pages/shared/scroll-to-top';
 import { useNavigate } from 'react-router';
 /* import BannerTopLeft from 'src/assets/images/frontend-pages/homepage/banner-top-left.svg'; */
