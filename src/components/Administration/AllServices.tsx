@@ -26,7 +26,7 @@ interface cardType {
 const topcards: cardType[] = [
   {
     icon: icon1,
-    name: 'General handyman',
+    name: 'General Handyman',
     digits: '59',
     bgcolor: 'info',
   },
@@ -38,7 +38,7 @@ const topcards: cardType[] = [
   },
   {
     icon: icon3,
-    name: 'Furniture assembly',
+    name: 'Furniture Assembly',
     digits: '3,650',
     bgcolor: 'warning',
   },
@@ -50,7 +50,7 @@ const topcards: cardType[] = [
   },
   {
     icon: icon5,
-    name: 'Furniture moving',
+    name: 'Furniture Moving',
     digits: '696',
     bgcolor: 'warning',
   },
@@ -94,7 +94,7 @@ const topcards: cardType[] = [
     bgcolor: 'error',
   },
     {
-    name: 'Smoke detectors',
+    name: 'Smoke Detectors',
     icon: icon9,
     digits: '3,650',
     bgcolor: 'warning',

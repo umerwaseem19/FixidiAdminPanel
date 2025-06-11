@@ -13,17 +13,19 @@ import {
 import Tooltip from '@mui/material/Tooltip';
 
 // icons
-import icon1 from 'src/assets/images/FixidiIcons/hammer-solid.svg';
-import icon2 from 'src/assets/images/FixidiIcons/tv-solid.svg';
-import icon3 from 'src/assets/images/FixidiIcons/screwdriver-wrench-solid.svg';
-import icon4 from 'src/assets/images/FixidiIcons/cleaning-svgrepo-com.svg';
-import icon5 from 'src/assets/images/FixidiIcons/truck-solid.svg';
-import icon6 from 'src/assets/images/FixidiIcons/dots-vertical-svgrepo-com.svg';
+import icon1 from 'src/assets/images/FixidiIcons/handypro.svg';
+import icon2 from 'src/assets/images/FixidiIcons/tvMounting.svg';
+import icon3 from 'src/assets/images/FixidiIcons/furnitureAssembly.svg';
+import icon4 from 'src/assets/images/FixidiIcons/houseCleaning.svg';
+import icon5 from 'src/assets/images/FixidiIcons/houseKeeping.svg';
+import icon6 from 'src/assets/images/FixidiIcons/furnitureMoving.svg';
 
-import icon7 from 'src/assets/images/FixidiIcons/hanging-rectangular-frame-svgrepo-com.svg';
-import icon8 from 'src/assets/images/FixidiIcons/light-bulb-svgrepo-com.svg';
-import icon9 from 'src/assets/images/FixidiIcons/smoke-detector-svgrepo-com.svg';
-
+import icon7 from 'src/assets/images/FixidiIcons/hauling.svg';
+import icon8 from 'src/assets/images/FixidiIcons/lightFixture.svg';
+import icon9 from 'src/assets/images/FixidiIcons/smokeDetector.svg';
+import icon10 from 'src/assets/images/FixidiIcons/gutterCleaning.svg';
+import icon11 from 'src/assets/images/FixidiIcons/landscapping.svg';
+import icon12 from 'src/assets/images/FixidiIcons/holidayLights.svg';
 import user1 from 'src/assets/images/profile/user-1.jpg';
 import user2 from 'src/assets/images/profile/user-2.jpg';
 import user3 from 'src/assets/images/profile/user-3.jpg';
@@ -51,7 +53,7 @@ import Features from '../landingpage/features/Features';
 
 const Frameworks = [
   {
-    name: 'General handyman',
+    name: 'General Handyman',
     id: 1,
     icon: icon1,
   },
@@ -61,7 +63,7 @@ const Frameworks = [
     icon: icon2,
   },
   {
-    name: 'Furniture assembly',
+    name: 'Furniture Assembly',
     id: 3,
     icon: icon3,
   },
@@ -71,32 +73,47 @@ const Frameworks = [
     icon: icon4,
   },
   {
-    name: 'Furniture moving',
+    name: 'Hauling',
     id: 5,
-    icon: icon5,
+    icon: icon7,
   },
   {
     name: 'Hanging',
     id: 6,
-    icon: icon7,
+    icon: icon5,
   },
   {
-    name: 'Light fixtures',
+    name: 'Light Fixtures',
     id: 7,
     icon: icon8,
   },
-
   {
-    name: 'Smoke detectors',
+    name: 'Furniture Moving',
+    id: 8,
+    icon: icon6,
+  },
+  {
+    name: 'Smoke Detectors',
     id: 12,
     icon: icon9,
   },
 
   {
-    name: 'More',
-    id: 999,
-    icon: icon6,
+    name: 'Gutter Cleaning',
+    id: 9,
+    icon: icon10,
   },
+  {
+    name: 'Landscaping',
+    id: 11,
+    icon: icon11,
+  },
+  {
+    name: 'Holiday Lights',
+    id: 10,
+    icon: icon12,
+  },
+  /////////////
 ];
 const FixidiLandingPage = () => {
   const theme = useTheme();
@@ -141,7 +158,6 @@ const FixidiLandingPage = () => {
           }}
         >
           <Grid container spacing={3} justifyContent="center" mb={4}>
-         
             <Grid
               textAlign="center"
               size={{
@@ -218,29 +234,20 @@ const FixidiLandingPage = () => {
                 />
               </Stack>
 
-              <Stack
-                direction="row"
-                sx={{ flexWrap: 'wrap' }}
-                alignItems="center"
-                spacing={3}
-                mb={8}
-                justifyContent="center"
-              >
-                {Frameworks.map((fw, i) => (
+              <Stack direction="row" flexWrap="wrap" justifyContent="center" gap={2} mb={2}>
+                {Frameworks.slice(0, 6).map((fw, i) => (
                   <Tooltip title={fw.name} key={i}>
                     <Box
-                      width="54px"
-                      height="54px"
+                      width="100px"
+                      height="100px"
                       display="flex"
                       sx={{
-                        boxShadow: theme.palette.mode === 'dark' ? null : theme.shadows[10],
-                        backgroundColor: theme.palette.mode === 'dark' ? '#1f2c4f' : '#D7E2FF',
-                        borderRadius: '50%',
-
                         cursor: 'pointer',
                       }}
                       alignItems="center"
-                      justifyContent="center"
+                                        justifyContent="space-around"
+
+                      flexDirection="column"
                       borderRadius="16px"
                       onClick={() => handleButtonClick(fw.name, 'client')}
                     >
@@ -251,10 +258,40 @@ const FixidiLandingPage = () => {
                         height={26}
                         style={{ fill: '#4570EA' }}
                       />
+                      <b>{fw.name}</b>
                     </Box>
                   </Tooltip>
                 ))}
               </Stack>
+              <Stack direction="row" flexWrap="wrap" justifyContent="center" gap={2}>
+                {Frameworks.slice(6, 12).map((fw, i) => (
+                  <Tooltip title={fw.name} key={i}>
+                    <Box
+                      width="100px"
+                      height="100px"
+                      display="flex"
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                      alignItems="center"
+                      justifyContent="space-around"
+                      flexDirection="column"
+                      borderRadius="16px"
+                      onClick={() => handleButtonClick(fw.name, 'client')}
+                    >
+                      <img
+                        src={fw.icon}
+                        alt={fw.icon}
+                        width={26}
+                        height={26}
+                        style={{ fill: '#4570EA' }}
+                      />
+                      <b>{fw.name}</b>
+                    </Box>
+                  </Tooltip>
+                ))}
+              </Stack>
+
               <Stack
                 my={3}
                 direction={{ xs: 'column', sm: 'row' }}
@@ -272,7 +309,6 @@ const FixidiLandingPage = () => {
                 </Typography>
               </Stack>
             </Grid>
-         
           </Grid>
           {lgUp ? (
             <img

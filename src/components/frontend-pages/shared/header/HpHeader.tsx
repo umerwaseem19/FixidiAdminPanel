@@ -26,7 +26,7 @@ const HpHeader: React.FC<HpHeaderProps> = ({ onProfessionalClick, showProfession
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     justifyContent: 'center',
     [theme.breakpoints.up('lg')]: {
-      minHeight: '100px',
+      minHeight: '40px',
     },
     backgroundColor: theme.palette.primary.light,
   }));
