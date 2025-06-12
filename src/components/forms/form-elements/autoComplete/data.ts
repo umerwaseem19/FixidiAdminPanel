@@ -89,21 +89,21 @@ const houseServices = [
   { title: "Hand Shower Replacement", startingPrice: 25 },
   { title: "Welding Services", startingPrice: 60 },
   { title: "Rain Gutter Installation", startingPrice: 170 }, */
-  { title: "General Handyman", startingPrice: 250,     id: 1, },
+  { title: "Handyman", startingPrice: 250,     id: 1, },
   { title: "TV Mounting", startingPrice: 80,     id: 2, },
-  { title: "Furniture Assembly", startingPrice: 30,     id: 3, },
-  { title: "House Cleaning", startingPrice: 60,     id: 4, },
-  { title: "Furniture Moving", startingPrice: 20,     id: 5, },
+  { title: "Assembly", startingPrice: 30,     id: 3, },
+  { title: "Cleaning", startingPrice: 60,     id: 4, },
+  { title: "Moving", startingPrice: 20,     id: 5, },
   { title: "Hanging", startingPrice: 15,     id: 6, },
-  { title: "Light Fixtures", startingPrice: 40,     id: 7, },
+  { title: "Lighting", startingPrice: 40,     id: 7, },
   { title: "Landscaping", startingPrice: 250,     id: 11, },
 
 
   
   { title: "Hauling", startingPrice: 20,     id: 8, },
-  { title: "Gutter Cleaning", startingPrice: 15,     id: 9, },
-  { title: "Holiday Lights", startingPrice: 40,     id: 10, },
-  { title: "Smoke Detectors", startingPrice: 250,     id: 12, },
+  { title: "Gutterworks", startingPrice: 15,     id: 9, },
+  { title: "Decorating", startingPrice: 40,     id: 10, },
+  { title: "Detectors", startingPrice: 250,     id: 12, },
 ];
 
 

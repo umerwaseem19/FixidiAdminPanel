@@ -13,19 +13,19 @@ import {
 import Tooltip from '@mui/material/Tooltip';
 
 // icons
-import icon1 from 'src/assets/images/FixidiIcons/handypro.svg';
+import icon1 from 'src/assets/images/FixidiIcons/generalHandyman.svg';
 import icon2 from 'src/assets/images/FixidiIcons/tvMounting.svg';
 import icon3 from 'src/assets/images/FixidiIcons/furnitureAssembly.svg';
 import icon4 from 'src/assets/images/FixidiIcons/houseCleaning.svg';
-import icon5 from 'src/assets/images/FixidiIcons/houseKeeping.svg';
+import icon5 from 'src/assets/images/FixidiIcons/hanging.svg';
 import icon6 from 'src/assets/images/FixidiIcons/furnitureMoving.svg';
 
 import icon7 from 'src/assets/images/FixidiIcons/hauling.svg';
-import icon8 from 'src/assets/images/FixidiIcons/lightFixture.svg';
+import icon8 from 'src/assets/images/FixidiIcons/lightfix.svg';
 import icon9 from 'src/assets/images/FixidiIcons/smokeDetector.svg';
 import icon10 from 'src/assets/images/FixidiIcons/gutterCleaning.svg';
 import icon11 from 'src/assets/images/FixidiIcons/landscapping.svg';
-import icon12 from 'src/assets/images/FixidiIcons/holidayLights.svg';
+import icon12 from 'src/assets/images/FixidiIcons/lights.svg';
 import user1 from 'src/assets/images/profile/user-1.jpg';
 import user2 from 'src/assets/images/profile/user-2.jpg';
 import user3 from 'src/assets/images/profile/user-3.jpg';
@@ -53,7 +53,7 @@ import Features from '../landingpage/features/Features';
 
 const Frameworks = [
   {
-    name: 'General Handyman',
+    name: 'Handyman',
     id: 1,
     icon: icon1,
   },
@@ -63,12 +63,12 @@ const Frameworks = [
     icon: icon2,
   },
   {
-    name: 'Furniture Assembly',
+    name: 'Assembly',
     id: 3,
     icon: icon3,
   },
   {
-    name: 'House Cleaning',
+    name: 'Cleaning',
     id: 4,
     icon: icon4,
   },
@@ -83,23 +83,23 @@ const Frameworks = [
     icon: icon5,
   },
   {
-    name: 'Light Fixtures',
+    name: 'Lighting',
     id: 7,
     icon: icon8,
   },
   {
-    name: 'Furniture Moving',
+    name: 'Moving',
     id: 8,
     icon: icon6,
   },
   {
-    name: 'Smoke Detectors',
+    name: 'Detectors',
     id: 12,
     icon: icon9,
   },
 
   {
-    name: 'Gutter Cleaning',
+    name: 'Gutterworks',
     id: 9,
     icon: icon10,
   },
@@ -109,7 +109,7 @@ const Frameworks = [
     icon: icon11,
   },
   {
-    name: 'Holiday Lights',
+    name: 'Decorating',
     id: 10,
     icon: icon12,
   },
@@ -234,11 +234,11 @@ const FixidiLandingPage = () => {
                 />
               </Stack>
 
-              <Stack direction="row" flexWrap="wrap" justifyContent="center" gap={2} mb={2}>
+              <Stack direction="row" flexWrap="wrap" justifyContent="center"  mb={2}>
                 {Frameworks.slice(0, 6).map((fw, i) => (
                   <Tooltip title={fw.name} key={i}>
                     <Box
-                      width="100px"
+                      width="120px"
                       height="100px"
                       display="flex"
                       sx={{
@@ -254,20 +254,20 @@ const FixidiLandingPage = () => {
                       <img
                         src={fw.icon}
                         alt={fw.icon}
-                        width={26}
-                        height={26}
-                        style={{ fill: '#4570EA' }}
+                        width={50}
+                        height={70}
+                        style={{ fill: '#8A8D8C' }}
                       />
                       <b>{fw.name}</b>
                     </Box>
                   </Tooltip>
                 ))}
               </Stack>
-              <Stack direction="row" flexWrap="wrap" justifyContent="center" gap={2}>
+              <Stack direction="row" flexWrap="wrap" justifyContent="center" mb={2}>
                 {Frameworks.slice(6, 12).map((fw, i) => (
                   <Tooltip title={fw.name} key={i}>
                     <Box
-                      width="100px"
+                      width="120px"
                       height="100px"
                       display="flex"
                       sx={{
@@ -282,8 +282,8 @@ const FixidiLandingPage = () => {
                       <img
                         src={fw.icon}
                         alt={fw.icon}
-                        width={26}
-                        height={26}
+                        width={50}
+                        height={70}
                         style={{ fill: '#4570EA' }}
                       />
                       <b>{fw.name}</b>
@@ -292,7 +292,7 @@ const FixidiLandingPage = () => {
                 ))}
               </Stack>
 
-              <Stack
+             {/*  <Stack
                 my={3}
                 direction={{ xs: 'column', sm: 'row' }}
                 spacing="20px"
@@ -307,7 +307,7 @@ const FixidiLandingPage = () => {
                 <Typography variant="h6" fontWeight={500}>
                   Trusted by 52,589+ users and agencies worldwide
                 </Typography>
-              </Stack>
+              </Stack> */}
             </Grid>
           </Grid>
           {lgUp ? (

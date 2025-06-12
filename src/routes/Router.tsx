@@ -6,6 +6,7 @@ import Loadable from '../layouts/full/shared/loadable/Loadable';
 import UserRegistration from 'src/components/Administration/UserRegistration';
 import AllServices from 'src/components/Administration/AllServices';
 
+const Login = Loadable(lazy(() => import('../views/authentication/auth1/Login')));
 /* ***Layouts**** */
 //const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
 /* const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout'))); */
@@ -154,7 +155,6 @@ const WidgetBanners = Loadable(lazy(() => import('../views/widgets/banners/Widge
 const WidgetCharts = Loadable(lazy(() => import('../views/widgets/charts/WidgetCharts')));
 
 // authentication
-const Login = Loadable(lazy(() => import('../views/authentication/auth1/Login')));
 const Login2 = Loadable(lazy(() => import('../views/authentication/auth2/Login2')));
 const Register = Loadable(lazy(() => import('../views/authentication/auth1/Register')));
 const Register2 = Loadable(lazy(() => import('../views/authentication/auth2/Register2')));
@@ -306,6 +306,10 @@ const router = createBrowserRouter ([
 {
   path: '/FixidiLandingPage',
   element: <FixidiLandingPage />
+},
+{
+  path: '/auth/login',
+  element: <Login />
 },
 {
   path: '/user-registration',

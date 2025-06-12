@@ -1,67 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-  Autocomplete,
-} from '@mui/material';
+import { Link } from 'react-router';
+import {  Grid2 as Grid,  Box,  Stack,  Typography,  Button,  Card,  CardContent,  Container,  TextField,  Autocomplete,  Alert,  Snackbar,  Checkbox,  FormControlLabel,  InputAdornment,  Switch, Slider,} from '@mui/material';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import PageContainer from 'src/components/container/PageContainer';
 import { Formik, Form, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import { MuiTelInput } from 'mui-tel-input';
 import { useLocation, useNavigate } from 'react-router';
 import HpHeader from '../frontend-pages/shared/header/HpHeader';
 import houseServices from '../forms/form-elements/autoComplete/data';
+import Logo from 'src/layouts/full/shared/logo/Logo';
+import img1 from 'src/assets/images/FixidiIcons/userRegistration.svg';
 interface ExpertiseEntry {
-  expertise: string;
-  serviceId: string | number; // or whatever type your serviceId is
-  hourlyRates: string;
-  comments: string;
-}
+  expertise: string; serviceId: string | number;  hourlyRates: string; comments: string; isHourlyRateApplicable: false;}
 interface Address {
-  area: string;
-  postalCode: string;
+  area: string;  postalCode: string;  city:string
 }
 interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  postalCode: string;
-  area: string;
-  addressList: Address[];
-  expertiseList: ExpertiseEntry[];
-}
-
-const canadaAreas = [
-  { title: 'Toronto' },
-  { title: 'Vancouver' },
-  { title: 'Montreal' },
-  { title: 'Calgary' },
-  { title: 'Ottawa' },
-  { title: 'Edmonton' },
-  { title: 'Quebec City' },
-  { title: 'Winnipeg' },
-  { title: 'Halifax' },
-];
+  firstName: string;  lastName: string;  email: string;  phoneNumber: string;  postalCode: string;  area: string;  addressList: Address[];  expertiseList: ExpertiseEntry[];}
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   phoneNumber: Yup.string().required('Phone number is required'),
-  postalCode: Yup.string().required('Postal code is required'),
-  area: Yup.string().required('Area is required'),
+  addressList: Yup.array().of(
+    Yup.object().shape({
+      area: Yup.string().required('Area is required'),
+      postalCode: Yup.string().required('Postal code is required'),
+      city: Yup.string().required('City is required')
+    })
+  ),
   expertiseList: Yup.array().of(
     Yup.object().shape({
       expertise: Yup.string()
         .oneOf(
           houseServices.map((s) => s.title),
-          'Please select a valid expertise',
+          'Please select a valid expertise'
         )
         .required('Expertise is required'),
       hourlyRates: Yup.number()
@@ -72,54 +48,95 @@ const validationSchema = Yup.object().shape({
     }),
   ),
 });
+function valuetext(value: number) {
+  return `${value}°C`;
+}
 
+const minDistance = 10;
 const UserRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [openAlert, setOpenAlert] = useState(false);
   const { userType, serviceType, frameworkId, houseServiceId } = location.state || {};
+  const [value1, setValue1] = React.useState<number[]>([20, 37]);
+
+  const handleChange1 = (event: Event, newValue: number[], activeThumb: number) => {
+    if (activeThumb === 0) {
+      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
+    } else {
+      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
+    }
+  };
   return (
     <>
-      <HpHeader />
-      {/*   <p>userType {userType}</p>
-      <p>serviceType {serviceType}</p>
-      <p>frameworkId {frameworkId}</p>
-      <p>houseServiceId {houseServiceId}</p> */}
-      <Box pt={3} mt={2}>
-        <Container sx={{ maxWidth: '1400px !important', position: 'relative' }}>
-          <Grid container spacing={3} justifyContent="center" mb={4}>
-            <Card
-              sx={{
-                width: '100%',
-                maxWidth: 1200,
-                mx: 'auto',
-                px: { xs: 1, sm: 2 },
-                boxShadow: 3,
-                borderRadius: 3,
-              }}
-            >
-              <CardContent>
+      <PageContainer title="Login" description="this is Login page">
+        <Grid container spacing={0} sx={{ overflowX: 'hidden' }}>
+          <Grid
+            sx={{
+              position: 'relative',              '&:before': {
+                content: '""',                background: 'radial-gradient(#d2f1df, #d3d7fa, #bad8f4)',
+                backgroundSize: '400% 400%',
+                animation: 'gradient 15s ease infinite',
+                position: 'absolute',                height: '100%',                width: '100%',                opacity: '0.3',              },
+            }}
+            size={{
+              xs: 12, sm: 12, lg: 7, xl: 8,}}
+          >
+            <Box position="relative">
+              <Box px={3}>
+                <Logo />
+              </Box>
+              <Box
+                alignItems="center"
+                justifyContent="center"
+                height={'calc(100vh - 75px)'}
+                sx={{
+                  display: {
+                    xs: 'none', lg: 'flex', },
+                }}
+              >
+                <img
+                  src={img1}
+                  alt="bg"
+                  style={{
+                    width: '100%', maxWidth: '1400px', }}
+                />
+              </Box>
+            </Box>
+          </Grid>
+
+          {/* form */}
+          <Grid
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            size={{
+              xs: 12, sm: 12, lg: 5, xl: 4,}}
+          >
+            <Box display="flex" flexDirection="column" height="100vh">
+              {/* Scrollable form content */}
+              <Box
+                p={4}
+                sx={{
+                  flex: 1, overflowY: 'auto', overflowX: 'hidden', // optional padding for scrollbar space
+                }}
+              >
                 <Typography
                   variant="h4"
                   sx={{ color: 'text.secondary', mb: 5, textAlign: 'center' }}
                 >
-                  {userType === 'client' ? 'User Registration' : 'Register as a Professional'}
+                  {userType === 'client' ? 'Service Request' : 'Register as a Professional'}
                 </Typography>
-
                 <Formik<FormValues>
                   initialValues={{
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    phoneNumber: '',
-                    addressList:
+                    firstName: '', lastName: '', email: '', phoneNumber: '', addressList:
                       userType === 'client'
-                        ? [{ area: '', postalCode: '' }]
-                        : [{ area: '', postalCode: '' }],
-                    expertiseList: [
-                      { expertise: serviceType || '', hourlyRates: '', comments: '' },
-                    ],
+                        ? [{ area: '',postalCode: '', city: '' }]
+                        : [{ area: '', postalCode: '', city: '' }],
+                    expertiseList: [   {
+                        expertise: serviceType || '', hourlyRates: '', comments: '', isHourlyRateApplicable: false, },    ],
                     serviceId: '',
                     userType: userType,
                   }}
@@ -128,13 +145,7 @@ const UserRegistration = () => {
                     try {
                       const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
                       const payload = {
-                        ...values,
-                        phoneNumber: cleanedPhone,
-                        serviceName: values.expertiseList.map((e) => e.expertise),
-                        area: values.addressList[0]?.area || '',
-                        postalCode: values.addressList[0]?.postalCode || '',
-                        addressList: userType === 'professional' ? values.addressList : undefined,
-                      };
+                        ...values,                        phoneNumber: cleanedPhone,                        serviceName: values.expertiseList.map((e) => e.expertise),                        area: values.addressList[0]?.area || '',                        postalCode: values.addressList[0]?.postalCode || '',                        city: values.addressList[0]?.city || '',                        addressList: userType === 'professional' ? values.addressList : undefined,                      };
                       console.log('payload ==>', payload);
 
                       await fetch(
@@ -188,10 +199,13 @@ const UserRegistration = () => {
                     return (
                       <Form>
                         <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6} md={3}>
+                          <Grid
+                            size={{
+                              xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                          >
                             <TextField
                               name="firstName"
-                              label="First Name"
+                              label="First Name *"
                               fullWidth
                               size="small"
                               value={values.firstName}
@@ -201,10 +215,13 @@ const UserRegistration = () => {
                               helperText={touched.firstName && errors.firstName}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6} md={3}>
+                          <Grid
+                            size={{
+                              xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                          >
                             <TextField
                               name="lastName"
-                              label="Last Name"
+                              label="Last Name *"
                               fullWidth
                               size="small"
                               value={values.lastName}
@@ -214,10 +231,13 @@ const UserRegistration = () => {
                               helperText={touched.lastName && errors.lastName}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6} md={3}>
+                          <Grid
+                            size={{
+                              xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                          >
                             <TextField
                               name="email"
-                              label="Email"
+                              label="Email *"
                               fullWidth
                               size="small"
                               value={values.email}
@@ -227,9 +247,12 @@ const UserRegistration = () => {
                               helperText={touched.email && errors.email}
                             />
                           </Grid>
-                         <Grid item xs={12} sm={6} md={3}>
+                          <Grid
+                            size={{
+                              xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                          >
                             <MuiTelInput
-                              name="phoneNumber"
+                              name="phoneNumber *"
                               defaultCountry="CA"
                               value={values.phoneNumber}
                               onChange={(value) => setFieldValue('phoneNumber', value)}
@@ -244,79 +267,151 @@ const UserRegistration = () => {
                             {({ push, remove }) => (
                               <>
                                 {values.addressList.map((item, index) => (
-                                  <Grid item xs={12} key={index}>
+                                  <Grid
+                                    size={{
+                                      xs: 12,  sm: 12,  lg: 12,  xl: 12,}}
+                                    key={index}
+                                  >
                                     <Grid container spacing={2} alignItems="center">
-                                      <Grid item xs={12} sm={6} md={6} lg={6}>
+                                      <Grid
+                                        size={{
+                                          xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                                      >
                                         <Autocomplete
                                           size="small"
                                           options={canadaAreas.map((option) => option.title)}
                                           value={item.area}
                                           onChange={(_, newValue) =>
                                             setFieldValue(
-                                              `addressList[${index}].area`,
+                                              `addressList[${index}].city`,
                                               newValue || '',
                                             )
                                           }
                                           renderInput={(params) => (
                                             <TextField
                                               {...params}
-                                              label="Area"
-                                              name={`addressList[${index}].area`}
+                                              label="City *"
+                                              name={`addressList[${index}].city`}
                                               onBlur={handleBlur}
                                               error={
-                                                touched.addressList?.[index]?.area &&
-                                                Boolean(errors.addressList?.[index]?.area)
+                                                touched.addressList?.[index]?.city &&
+                                                Boolean(errors.addressList?.[index]?.city)
                                               }
                                               helperText={
-                                                touched.addressList?.[index]?.area &&
-                                                errors.addressList?.[index]?.area
+                                                touched.addressList?.[index]?.city &&
+                                                errors.addressList?.[index]?.city
                                               }
                                             />
                                           )}
                                         />
                                       </Grid>
+                                      {userType === 'client' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                                        >
+                                          <TextField
+                                            name={`addressList[${index}].postalCode`}
+                                            label="Postal Code *"
+                                            fullWidth
+                                            size="small"
+                                            value={item.postalCode}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={
+                                              touched.addressList?.[index]?.postalCode &&
+                                              Boolean(errors.addressList?.[index]?.postalCode)
+                                            }
+                                            helperText={
+                                              touched.addressList?.[index]?.postalCode &&
+                                              errors.addressList?.[index]?.postalCode
+                                            }
+                                          />
+                                        </Grid>
+                                      )}
+                                      {userType === 'client' && (
+                                        <Grid size={{ xs: 12,sm: 12, lg: 12,xl: 12, }}
+                                        >
+                                          <TextField
+                                            name={`addressList[${index}].area`}
+                                            label="Address Line *"
+                                            fullWidth
+                                            size="small"
+                                            value={values.area}
+                                            onChange={handleChange}
+                                              onBlur={handleBlur}
+                                            error={
+                                              touched.addressList?.[index]?.area &&
+                                              Boolean(errors.addressList?.[index]?.area)
+                                            }
+                                            helperText={
+                                              touched.addressList?.[index]?.area &&
+                                              errors.addressList?.[index]?.area
+                                            }
+                                          />
+                                        </Grid>
+                                      )}
+                                      {userType === 'professional' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,   sm: 12,   lg: 12,   xl: 12, }}
+                                        >
+                                    
+                                          <Autocomplete
+                                            multiple
+                                            fullWidth
+                                            size="small"
+                                            id="checkboxes-tags-demo"
+                                            options={canadaAreas}
+                                            disableCloseOnSelect
+                                            getOptionLabel={(option) => option.title}
+                                            renderOption={(props, option, { selected }) => {
+                                              const { key, ...optionProps } = props;
+                                              return (
+                                                <li key={key} {...optionProps}>
+                                                  <Checkbox
+                                                    icon={icon}
+                                                    checkedIcon={checkedIcon}
+                                                    style={{ marginRight: 8 }}
+                                                    checked={selected}
+                                                  />
+                                                  {option.title}
+                                                </li>
+                                              );
+                                            }}
+                                            renderInput={(params) => (
+                                              <TextField
+                                                name={`addressList[${index}].area`}
+                                                label="Coverage Area *"
+                                                {...params}
+                                                placeholder="Select Areas"
+                                                error={
+                                                  touched.addressList?.[index]?.area &&
+                                                  Boolean(errors.addressList?.[index]?.area)
+                                                }
+                                                helperText={
+                                                  touched.addressList?.[index]?.area &&
+                                                  errors.addressList?.[index]?.area
+                                                }
+                                              />
+                                            )}
+                                          />
+                                        </Grid>
+                                      )}
 
-                                   <Grid item xs={12} sm={6} md={6} lg={3}>
-                                        <TextField
-                                          name={`addressList[${index}].postalCode`}
-                                          label="Postal Code"
-                                          fullWidth
-                                          size="small"
-                                          value={item.postalCode}
-                                          onChange={handleChange}
-                                          onBlur={handleBlur}
-                                          error={
-                                            touched.addressList?.[index]?.postalCode &&
-                                            Boolean(errors.addressList?.[index]?.postalCode)
-                                          }
-                                          helperText={
-                                            touched.addressList?.[index]?.postalCode &&
-                                            errors.addressList?.[index]?.postalCode
-                                          }
-                                        />
-                                      </Grid>
-
-                                      <Grid item xs={12} sm={6} md={6} lg={3}>
-                                        {userType === 'professional' && index > 0 && (
+                                      <Grid
+                                        size={{
+                                          xs: 12,    sm: 12,    lg: 3,    xl: 3,  }}
+                                      >
+                                        {index > 0 && (
                                           <Button color="error" onClick={() => remove(index)}>
                                             Remove
                                           </Button>
                                         )}
                                       </Grid>
-                                    </Grid>{' '}
+                                    </Grid>
                                   </Grid>
                                 ))}
-
-                                {userType === 'professional' && (
-                                  <Grid item xs={12}>
-                                    <Button
-                                      variant="outlined"
-                                      onClick={() => push({ area: '', postalCode: '' })}
-                                    >
-                                      Add Address
-                                    </Button>
-                                  </Grid>
-                                )}
                               </>
                             )}
                           </FieldArray>
@@ -325,9 +420,16 @@ const UserRegistration = () => {
                             {({ push, remove }) => (
                               <>
                                 {values.expertiseList.map((item, index) => (
-                                  <Grid item xs={12} key={index}>
+                                  <Grid
+                                    size={{
+                                      xs: 12,   sm: 12,   lg: 12,   xl: 12, }}
+                                    key={index}
+                                  >
                                     <Grid container spacing={2} alignItems="center">
-                                      <Grid item xs={12} sm={6} md={6} lg={3}>
+                                      <Grid
+                                        size={{
+                                          xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                                      >
                                         <Autocomplete
                                           size="small"
                                           options={houseServices}
@@ -361,7 +463,7 @@ const UserRegistration = () => {
                                             <TextField
                                               {...params}
                                               name={`expertiseList[${index}].expertise`}
-                                              label="Expertise"
+                                              label="Expertise *"
                                               error={
                                                 touched.expertiseList?.[index]?.expertise &&
                                                 Boolean(errors.expertiseList?.[index]?.expertise)
@@ -374,37 +476,122 @@ const UserRegistration = () => {
                                           )}
                                         />
                                       </Grid>
-                                      <Grid item xs={12} sm={6} md={6} lg={3}>
-                                        <TextField
-                                          name={`expertiseList[${index}].hourlyRates`}
-                                          label="Hourly Rates"
-                                          fullWidth
-                                          size="small"
-                                          value={item.hourlyRates}
-                                          onChange={handleChange}
-                                          onBlur={handleBlur}
-                                          error={
-                                            touched.expertiseList?.[index]?.hourlyRates &&
-                                            Boolean(errors.expertiseList?.[index]?.hourlyRates)
-                                          }
-                                          helperText={
-                                            touched.expertiseList?.[index]?.hourlyRates &&
-                                            errors.expertiseList?.[index]?.hourlyRates
+                                      {userType === 'professional' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 6,
+                                            xl: 6,
+                                          }}
+                                        >
+                                          <TextField
+                                            name={`expertiseList[${index}].hourlyRates`}
+                                            label="Rates *"
+                                            slotProps={{
+                                              input: {
+                                                startAdornment: (
+                                                  <InputAdornment position="start">
+                                                    $
+                                                  </InputAdornment>
+                                                ),
+                                              },
+                                            }}
+                                            fullWidth
+                                            size="small"
+                                            value={item.hourlyRates}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={
+                                              touched.expertiseList?.[index]?.hourlyRates &&
+                                              Boolean(errors.expertiseList?.[index]?.hourlyRates)
+                                            }
+                                            helperText={
+                                              touched.expertiseList?.[index]?.hourlyRates &&
+                                              errors.expertiseList?.[index]?.hourlyRates
+                                            }
+                                          />
+                                        </Grid>
+                                      )}
+
+                                      {userType === 'client' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 6,
+                                            xl: 6,
+                                          }}
+                                        >
+                                          <Box display="flex" alignItems="center" gap={2}>
+                                            <Typography>Min</Typography>{' '}
+                                            {/* This acts like a start adornment */}
+                                            <Slider
+                                              getAriaLabel={() => 'Minimum distance'}
+                                              value={value1}
+                                              onChange={handleChange1}
+                                              valueLabelDisplay="auto"
+                                              getAriaValueText={valuetext}
+                                              disableSwap
+                                            />
+                                            <Typography>Max</Typography>
+                                          </Box>
+                                        </Grid>
+                                      )}
+                                      <Grid
+                                        size={{
+                                          xs: 12,
+                                          sm: 12,
+                                          lg: 6,
+                                          xl: 6,
+                                        }}
+                                      >
+                                      
+                                        <FormControlLabel
+                                          style={{ marginLeft: '0' }}
+                                          control={
+                                            <Box display="flex" alignItems="center" gap={1}>
+                                              <Typography variant="body2">Hourly</Typography>
+                                              <Switch
+                                                name={`expertiseList[${index}].isHourlyRateApplicable`}
+                                                checked={
+                                                  values.expertiseList[index].isHourlyRateApplicable
+                                                }
+                                                onChange={handleChange}
+                                              />
+                                              <Typography variant="body2">Fixed</Typography>
+                                            </Box>
                                           }
                                         />
                                       </Grid>
-                                     <Grid item xs={12} sm={6} md={6} lg={3}>
-                                        <TextField
-                                          name={`expertiseList[${index}].comments`}
-                                          label="Comments"
-                                          fullWidth
-                                          size="small"
-                                          value={item.comments}
-                                          onChange={handleChange}
-                                          onBlur={handleBlur}
-                                        />
-                                      </Grid>
-                                      <Grid item xs={2}>
+                                      {userType === 'client' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 9,
+                                            xl: 9,
+                                          }}
+                                        >
+                                          <TextField
+                                            name={`expertiseList[${index}].comments`}
+                                            label="Comments"
+                                            fullWidth
+                                            size="small"
+                                            value={item.comments}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                          />
+                                        </Grid>
+                                      )}
+                                      <Grid
+                                        size={{
+                                          xs: 2,
+                                          sm: 12,
+                                          lg: 3,
+                                          xl: 3,
+                                        }}
+                                      >
                                         {index > 0 && (
                                           <Button color="error" onClick={() => remove(index)}>
                                             Remove
@@ -414,8 +601,16 @@ const UserRegistration = () => {
                                     </Grid>
                                   </Grid>
                                 ))}
-                                <Grid item xs={12}>
+                                <Grid
+                                  size={{
+                                    xs: 12,
+                                    sm: 12,
+                                    lg: 12,
+                                    xl: 12,
+                                  }}
+                                >
                                   <Button
+                                    size="small"
                                     variant="outlined"
                                     onClick={() =>
                                       push({
@@ -423,6 +618,7 @@ const UserRegistration = () => {
                                         serviceId: '',
                                         hourlyRates: '',
                                         comments: '',
+                                        isHourlyRateApplicable: false,
                                       })
                                     }
                                   >
@@ -432,26 +628,45 @@ const UserRegistration = () => {
                               </>
                             )}
                           </FieldArray>
-
-                          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Button variant="contained" type="submit" size="small">
-                              {userType === 'client'
-                                ? 'Hire a Professional'
-                                : 'Become a Professional'}
-                            </Button>
-                          </Grid>
                         </Grid>
+
+                        <Snackbar
+                          open={openAlert}
+                          autoHideDuration={2000}
+                          onClose={() => {
+                            setOpenAlert(false);
+                            //  navigate('/FixidiLandingPage');
+                          }}
+                        >
+                          <Alert severity="success" sx={{ width: '100%' }}>
+                            Submitted Successfully!
+                          </Alert>
+                        </Snackbar>
                       </Form>
                     );
                   }}
                 </Formik>
-              </CardContent>
-            </Card>
+              </Box>{' '}
+              <Box
+                sx={{
+                  py: 2,borderTop: '1px solid #ccc',backgroundColor: '#fff',textAlign: 'center',}}
+              >
+                <Button variant="contained" type="submit">
+                  {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
+                </Button>
+              </Box>
+            </Box>
           </Grid>
-        </Container>
-      </Box>
+        </Grid>
+      </PageContainer>
     </>
   );
 };
 
 export default UserRegistration;
+
+const canadaAreas = [
+  { title: 'Toronto' },  { title: 'Vancouver' },  { title: 'Montreal' },  { title: 'Calgary' },  { title: 'Ottawa' },  { title: 'Edmonton' },  { title: 'Quebec City' },  { title: 'Winnipeg' },  { title: 'Halifax' },];
+
+const canadaCityAreas = [
+  { title: 'Downtown' },  { title: 'Scarborough' },  { title: 'Richmond Hill' },  { title: 'North York' },  { title: 'Etobicoke' },  { title: 'Markham' },  { title: 'Mississauga' },  { title: 'Brampton' },  { title: 'York' },  { title: 'East York' },  { title: 'Vaughan' },  { title: 'Thornhill' },  { title: 'Pickering' },  { title: 'Ajax' },  { title: 'Whitby' },  { title: 'Oshawa' },  { title: 'Milton' },  { title: 'Oakville' },  { title: 'Burlington' },  { title: 'Newmarket' },];
