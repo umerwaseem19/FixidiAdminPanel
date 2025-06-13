@@ -1,6 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import {  Grid2 as Grid,  Box,  Stack,  Typography,  Button,  Card,  CardContent,  Container,  TextField,  Autocomplete,  Alert,  Snackbar,  Checkbox,  FormControlLabel,  InputAdornment,  Switch, Slider,} from '@mui/material';
+import {
+  Grid2 as Grid,
+  Box,
+  Stack,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  TextField,
+  Autocomplete,
+  Alert,
+  Snackbar,
+  Checkbox,
+  FormControlLabel,
+  InputAdornment,
+  Switch,
+  Slider,
+} from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
@@ -13,12 +31,27 @@ import houseServices from '../forms/form-elements/autoComplete/data';
 import Logo from 'src/layouts/full/shared/logo/Logo';
 import img1 from 'src/assets/images/FixidiIcons/userRegistration.svg';
 interface ExpertiseEntry {
-  expertise: string; serviceId: string | number;  hourlyRates: string; comments: string; isHourlyRateApplicable: false;}
+  expertise: string;
+  serviceId: string | number;
+  hourlyRates: string | number[];
+  comments: string;
+  isHourlyRateApplicable: false;
+}
 interface Address {
-  area: string;  postalCode: string;  city:string
+  area: string | string[];
+  postalCode: string;
+  city: string;
 }
 interface FormValues {
-  firstName: string;  lastName: string;  email: string;  phoneNumber: string;  postalCode: string;  area: string;  addressList: Address[];  expertiseList: ExpertiseEntry[];}
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  postalCode: string;
+  area: string;
+  addressList: Address[];
+  expertiseList: ExpertiseEntry[];
+}
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required('First name is required'),
@@ -27,23 +60,46 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string().required('Phone number is required'),
   addressList: Yup.array().of(
     Yup.object().shape({
-      area: Yup.string().required('Area is required'),
-      postalCode: Yup.string().required('Postal code is required'),
-      city: Yup.string().required('City is required')
-    })
+      city: Yup.string().required('City is required'),
+      postalCode: Yup.string().when('$userType', {
+        is: 'client',
+        then: Yup.string().required('Postal code is required'),
+        otherwise: Yup.string(),
+      }),
+      area: Yup.mixed().when('$userType', {
+        is: 'client',
+        then: Yup.string().required('Address line is required'),
+        otherwise: Yup.array()
+          .of(
+            Yup.object().shape({
+              title: Yup.string().required(),
+            }),
+          )
+          .min(1, 'Select at least one area')
+          .required('Coverage area is required'),
+      }),
+    }),
   ),
   expertiseList: Yup.array().of(
     Yup.object().shape({
       expertise: Yup.string()
         .oneOf(
           houseServices.map((s) => s.title),
-          'Please select a valid expertise'
+          'Please select a valid expertise',
         )
         .required('Expertise is required'),
-      hourlyRates: Yup.number()
-        .typeError('Must be a number')
-        .positive('Must be positive')
-        .required('Rates are required'),
+      // Conditional hourly rates for professionals
+      hourlyRates: Yup.mixed().when('$userType', {
+        is: 'professional',
+        then: Yup.number()
+          .typeError('Must be a number')
+          .positive('Must be positive')
+          .required('Rates are required'),
+        otherwise: Yup.array()
+          .of(Yup.number())
+          .length(2, 'Please select a valid range')
+          .required('Budget range is required'),
+      }),
       comments: Yup.string(),
     }),
   ),
@@ -75,14 +131,24 @@ const UserRegistration = () => {
         <Grid container spacing={0} sx={{ overflowX: 'hidden' }}>
           <Grid
             sx={{
-              position: 'relative',              '&:before': {
-                content: '""',                background: 'radial-gradient(#d2f1df, #d3d7fa, #bad8f4)',
+              position: 'relative',
+              '&:before': {
+                content: '""',
+                background: 'radial-gradient(#d2f1df, #d3d7fa, #bad8f4)',
                 backgroundSize: '400% 400%',
                 animation: 'gradient 15s ease infinite',
-                position: 'absolute',                height: '100%',                width: '100%',                opacity: '0.3',              },
+                position: 'absolute',
+                height: '100%',
+                width: '100%',
+                opacity: '0.3',
+              },
             }}
             size={{
-              xs: 12, sm: 12, lg: 7, xl: 8,}}
+              xs: 12,
+              sm: 12,
+              lg: 7,
+              xl: 8,
+            }}
           >
             <Box position="relative">
               <Box px={3}>
@@ -94,14 +160,18 @@ const UserRegistration = () => {
                 height={'calc(100vh - 75px)'}
                 sx={{
                   display: {
-                    xs: 'none', lg: 'flex', },
+                    xs: 'none',
+                    lg: 'flex',
+                  },
                 }}
               >
                 <img
                   src={img1}
                   alt="bg"
                   style={{
-                    width: '100%', maxWidth: '1400px', }}
+                    width: '100%',
+                    maxWidth: '1400px',
+                  }}
                 />
               </Box>
             </Box>
@@ -113,14 +183,20 @@ const UserRegistration = () => {
             justifyContent="center"
             alignItems="center"
             size={{
-              xs: 12, sm: 12, lg: 5, xl: 4,}}
+              xs: 12,
+              sm: 12,
+              lg: 5,
+              xl: 4,
+            }}
           >
             <Box display="flex" flexDirection="column" height="100vh">
               {/* Scrollable form content */}
               <Box
                 p={4}
                 sx={{
-                  flex: 1, overflowY: 'auto', overflowX: 'hidden', // optional padding for scrollbar space
+                  flex: 1,
+                  overflowY: 'auto',
+                  overflowX: 'hidden', // optional padding for scrollbar space
                 }}
               >
                 <Typography
@@ -131,21 +207,42 @@ const UserRegistration = () => {
                 </Typography>
                 <Formik<FormValues>
                   initialValues={{
-                    firstName: '', lastName: '', email: '', phoneNumber: '', addressList:
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phoneNumber: '',
+                    addressList:
                       userType === 'client'
-                        ? [{ area: '',postalCode: '', city: '' }]
+                        ? [{ area: '', postalCode: '', city: '' }]
                         : [{ area: '', postalCode: '', city: '' }],
-                    expertiseList: [   {
-                        expertise: serviceType || '', hourlyRates: '', comments: '', isHourlyRateApplicable: false, },    ],
+                    expertiseList: [
+                      {
+                        expertise: serviceType || '',
+                        hourlyRates: userType === 'professional' ? '' : [20, 80], // Initialize
+                        comments: '',
+                        isHourlyRateApplicable: false,
+                      },
+                    ],
                     serviceId: '',
                     userType: userType,
                   }}
                   validationSchema={validationSchema}
+                  validateOnMount
+                  validationContext={{ userType }}
                   onSubmit={async (values) => {
                     try {
                       const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
                       const payload = {
-                        ...values,                        phoneNumber: cleanedPhone,                        serviceName: values.expertiseList.map((e) => e.expertise),                        area: values.addressList[0]?.area || '',                        postalCode: values.addressList[0]?.postalCode || '',                        city: values.addressList[0]?.city || '',                        addressList: userType === 'professional' ? values.addressList : undefined,                      };
+                        ...values,
+                        phoneNumber: cleanedPhone,
+                        serviceName: values.expertiseList.map((e) => e.expertise),
+                        area: Array.isArray(values.addressList[0].area)
+                          ? values.addressList[0].area.map((a) => a.title)
+                          : [values.addressList[0].area],
+                        postalCode: values.addressList[0]?.postalCode || '',
+                        city: values.addressList[0]?.city || '',
+                        addressList: userType === 'professional' ? values.addressList : undefined,
+                      };
                       console.log('payload ==>', payload);
 
                       await fetch(
@@ -201,7 +298,11 @@ const UserRegistration = () => {
                         <Grid container spacing={2}>
                           <Grid
                             size={{
-                              xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                              xs: 12,
+                              sm: 12,
+                              lg: 6,
+                              xl: 6,
+                            }}
                           >
                             <TextField
                               name="firstName"
@@ -217,7 +318,11 @@ const UserRegistration = () => {
                           </Grid>
                           <Grid
                             size={{
-                              xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                              xs: 12,
+                              sm: 12,
+                              lg: 6,
+                              xl: 6,
+                            }}
                           >
                             <TextField
                               name="lastName"
@@ -233,7 +338,11 @@ const UserRegistration = () => {
                           </Grid>
                           <Grid
                             size={{
-                              xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                              xs: 12,
+                              sm: 12,
+                              lg: 6,
+                              xl: 6,
+                            }}
                           >
                             <TextField
                               name="email"
@@ -249,7 +358,11 @@ const UserRegistration = () => {
                           </Grid>
                           <Grid
                             size={{
-                              xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                              xs: 12,
+                              sm: 12,
+                              lg: 6,
+                              xl: 6,
+                            }}
                           >
                             <MuiTelInput
                               name="phoneNumber *"
@@ -269,29 +382,45 @@ const UserRegistration = () => {
                                 {values.addressList.map((item, index) => (
                                   <Grid
                                     size={{
-                                      xs: 12,  sm: 12,  lg: 12,  xl: 12,}}
+                                      xs: 12,
+                                      sm: 12,
+                                      lg: 12,
+                                      xl: 12,
+                                    }}
                                     key={index}
                                   >
                                     <Grid container spacing={2} alignItems="center">
                                       <Grid
                                         size={{
-                                          xs: 12,   sm: 12,   lg: 6,   xl: 6, }}
+                                          xs: 12,
+                                          sm: 12,
+                                          lg: 6,
+                                          xl: 6,
+                                        }}
                                       >
                                         <Autocomplete
                                           size="small"
                                           options={canadaAreas.map((option) => option.title)}
-                                          value={item.area}
+                                          value={item.city}
                                           onChange={(_, newValue) =>
                                             setFieldValue(
                                               `addressList[${index}].city`,
                                               newValue || '',
                                             )
                                           }
+                                          getOptionLabel={(option) => option}
                                           renderInput={(params) => (
                                             <TextField
                                               {...params}
                                               label="City *"
                                               name={`addressList[${index}].city`}
+                                              value={values.addressList[index].city} // ✅ use dynamic index
+                                              onChange={(e) =>
+                                                setFieldValue(
+                                                  `addressList[${index}].city`,
+                                                  e.target.value,
+                                                )
+                                              } // ✅ use dynamic index
                                               onBlur={handleBlur}
                                               error={
                                                 touched.addressList?.[index]?.city &&
@@ -308,7 +437,11 @@ const UserRegistration = () => {
                                       {userType === 'client' && (
                                         <Grid
                                           size={{
-                                            xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 6,
+                                            xl: 6,
+                                          }}
                                         >
                                           <TextField
                                             name={`addressList[${index}].postalCode`}
@@ -330,8 +463,7 @@ const UserRegistration = () => {
                                         </Grid>
                                       )}
                                       {userType === 'client' && (
-                                        <Grid size={{ xs: 12,sm: 12, lg: 12,xl: 12, }}
-                                        >
+                                        <Grid size={{ xs: 12, sm: 12, lg: 12, xl: 12 }}>
                                           <TextField
                                             name={`addressList[${index}].area`}
                                             label="Address Line *"
@@ -339,7 +471,7 @@ const UserRegistration = () => {
                                             size="small"
                                             value={values.area}
                                             onChange={handleChange}
-                                              onBlur={handleBlur}
+                                            onBlur={handleBlur}
                                             error={
                                               touched.addressList?.[index]?.area &&
                                               Boolean(errors.addressList?.[index]?.area)
@@ -354,9 +486,12 @@ const UserRegistration = () => {
                                       {userType === 'professional' && (
                                         <Grid
                                           size={{
-                                            xs: 12,   sm: 12,   lg: 12,   xl: 12, }}
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 12,
+                                            xl: 12,
+                                          }}
                                         >
-                                    
                                           <Autocomplete
                                             multiple
                                             fullWidth
@@ -365,6 +500,10 @@ const UserRegistration = () => {
                                             options={canadaAreas}
                                             disableCloseOnSelect
                                             getOptionLabel={(option) => option.title}
+                                            value={values.addressList[index].area || []} // ✅ Get current value
+                                            onChange={(_, newValue) => {
+                                              setFieldValue(`addressList[${index}].area`, newValue); // ✅ Update Formik state
+                                            }}
                                             renderOption={(props, option, { selected }) => {
                                               const { key, ...optionProps } = props;
                                               return (
@@ -401,7 +540,11 @@ const UserRegistration = () => {
 
                                       <Grid
                                         size={{
-                                          xs: 12,    sm: 12,    lg: 3,    xl: 3,  }}
+                                          xs: 12,
+                                          sm: 12,
+                                          lg: 3,
+                                          xl: 3,
+                                        }}
                                       >
                                         {index > 0 && (
                                           <Button color="error" onClick={() => remove(index)}>
@@ -422,13 +565,21 @@ const UserRegistration = () => {
                                 {values.expertiseList.map((item, index) => (
                                   <Grid
                                     size={{
-                                      xs: 12,   sm: 12,   lg: 12,   xl: 12, }}
+                                      xs: 12,
+                                      sm: 12,
+                                      lg: 12,
+                                      xl: 12,
+                                    }}
                                     key={index}
                                   >
                                     <Grid container spacing={2} alignItems="center">
                                       <Grid
                                         size={{
-                                          xs: 12,  sm: 12,  lg: 6,  xl: 6,}}
+                                          xs: 12,
+                                          sm: 12,
+                                          lg: 6,
+                                          xl: 6,
+                                        }}
                                       >
                                         <Autocomplete
                                           size="small"
@@ -527,12 +678,17 @@ const UserRegistration = () => {
                                             <Typography>Min</Typography>{' '}
                                             {/* This acts like a start adornment */}
                                             <Slider
+                                              name={`expertiseList[${index}].hourlyRates`}
                                               getAriaLabel={() => 'Minimum distance'}
                                               value={value1}
                                               onChange={handleChange1}
                                               valueLabelDisplay="auto"
                                               getAriaValueText={valuetext}
                                               disableSwap
+                                              error={
+                                                touched.expertiseList?.[index]?.hourlyRates &&
+                                                Boolean(errors.expertiseList?.[index]?.hourlyRates)
+                                              }
                                             />
                                             <Typography>Max</Typography>
                                           </Box>
@@ -546,7 +702,6 @@ const UserRegistration = () => {
                                           xl: 6,
                                         }}
                                       >
-                                      
                                         <FormControlLabel
                                           style={{ marginLeft: '0' }}
                                           control={
@@ -642,6 +797,9 @@ const UserRegistration = () => {
                             Submitted Successfully!
                           </Alert>
                         </Snackbar>
+                        <Button variant="contained" type="submit">
+                          {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
+                        </Button>
                       </Form>
                     );
                   }}
@@ -649,11 +807,15 @@ const UserRegistration = () => {
               </Box>{' '}
               <Box
                 sx={{
-                  py: 2,borderTop: '1px solid #ccc',backgroundColor: '#fff',textAlign: 'center',}}
+                  py: 2,
+                  borderTop: '1px solid #ccc',
+                  backgroundColor: '#fff',
+                  textAlign: 'center',
+                }}
               >
-                <Button variant="contained" type="submit">
+                {/*   <Button variant="contained" type="submit">
                   {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
-                </Button>
+                </Button> */}
               </Box>
             </Box>
           </Grid>
@@ -666,7 +828,36 @@ const UserRegistration = () => {
 export default UserRegistration;
 
 const canadaAreas = [
-  { title: 'Toronto' },  { title: 'Vancouver' },  { title: 'Montreal' },  { title: 'Calgary' },  { title: 'Ottawa' },  { title: 'Edmonton' },  { title: 'Quebec City' },  { title: 'Winnipeg' },  { title: 'Halifax' },];
+  { title: 'Toronto' },
+  { title: 'Vancouver' },
+  { title: 'Montreal' },
+  { title: 'Calgary' },
+  { title: 'Ottawa' },
+  { title: 'Edmonton' },
+  { title: 'Quebec City' },
+  { title: 'Winnipeg' },
+  { title: 'Halifax' },
+];
 
 const canadaCityAreas = [
-  { title: 'Downtown' },  { title: 'Scarborough' },  { title: 'Richmond Hill' },  { title: 'North York' },  { title: 'Etobicoke' },  { title: 'Markham' },  { title: 'Mississauga' },  { title: 'Brampton' },  { title: 'York' },  { title: 'East York' },  { title: 'Vaughan' },  { title: 'Thornhill' },  { title: 'Pickering' },  { title: 'Ajax' },  { title: 'Whitby' },  { title: 'Oshawa' },  { title: 'Milton' },  { title: 'Oakville' },  { title: 'Burlington' },  { title: 'Newmarket' },];
+  { title: 'Downtown' },
+  { title: 'Scarborough' },
+  { title: 'Richmond Hill' },
+  { title: 'North York' },
+  { title: 'Etobicoke' },
+  { title: 'Markham' },
+  { title: 'Mississauga' },
+  { title: 'Brampton' },
+  { title: 'York' },
+  { title: 'East York' },
+  { title: 'Vaughan' },
+  { title: 'Thornhill' },
+  { title: 'Pickering' },
+  { title: 'Ajax' },
+  { title: 'Whitby' },
+  { title: 'Oshawa' },
+  { title: 'Milton' },
+  { title: 'Oakville' },
+  { title: 'Burlington' },
+  { title: 'Newmarket' },
+];
