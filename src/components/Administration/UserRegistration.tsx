@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Grid2 as Grid,
   Box,
-  Stack,
   Typography,
-  Button,
-  Card,
-  CardContent,
-  Container,
+  Button, 
   TextField,
   Autocomplete,
   Alert,
@@ -18,11 +13,12 @@ import {
   InputAdornment,
   Switch,
   Slider,
+  Tooltip,
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
-import { Formik, Form, FieldArray } from 'formik';
+import { Formik, Form, FieldArray, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { MuiTelInput } from 'mui-tel-input';
 import { useLocation, useNavigate } from 'react-router';
@@ -90,41 +86,35 @@ const validationSchema = Yup.object().shape({
         .required('Expertise is required'),
       // Conditional hourly rates for professionals
       hourlyRates: Yup.mixed().when('$userType', {
-        is: 'professional',
-        then: Yup.number()
-          .typeError('Must be a number')
-          .positive('Must be positive')
-          .required('Rates are required'),
-        otherwise: Yup.array()
-          .of(Yup.number())
-          .length(2, 'Please select a valid range')
-          .required('Budget range is required'),
+        is: 'client',
+        then: Yup.array()
+          .of(Yup.number().min(0).max(200))
+          .length(2, 'Provide both minimum and maximum rates')
+          .required('Hourly rate range is required'),
+        otherwise: Yup.number()
+          .min(0, 'Rate must be at least 0')
+          .max(200, 'Rate cannot exceed 200')
+          .nullable(true),
       }),
+
       comments: Yup.string(),
     }),
   ),
 });
-function valuetext(value: number) {
-  return `${value}°C`;
-}
+
 
 const minDistance = 10;
 const UserRegistration = () => {
   const location = useLocation();
+  const formikRef = useRef<FormikProps<any>>(null);
   const navigate = useNavigate();
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const [openAlert, setOpenAlert] = useState(false);
-  const { userType, serviceType, frameworkId, houseServiceId } = location.state || {};
+  const { userType, serviceType, houseServiceId } = location.state || {};
   const [value1, setValue1] = React.useState<number[]>([20, 37]);
 
-  const handleChange1 = (event: Event, newValue: number[], activeThumb: number) => {
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-    }
-  };
+
   return (
     <>
       <PageContainer title="Login" description="this is Login page">
@@ -206,6 +196,7 @@ const UserRegistration = () => {
                   {userType === 'client' ? 'Service Request' : 'Register as a Professional'}
                 </Typography>
                 <Formik<FormValues>
+                  innerRef={formikRef}
                   initialValues={{
                     firstName: '',
                     lastName: '',
@@ -262,7 +253,15 @@ const UserRegistration = () => {
                     }
                   }}
                 >
-                  {({ values, errors, touched, handleBlur, handleChange, setFieldValue }) => {
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleBlur,
+                    handleChange,
+                    setFieldValue,
+                    submitForm,
+                  }) => {
                     // On mount, set initial values for expertise and serviceId
                     useEffect(() => {
                       if (houseServices.length > 0) {
@@ -294,7 +293,7 @@ const UserRegistration = () => {
                       }
                     }, [houseServiceId, serviceType, houseServices, setFieldValue]);
                     return (
-                      <Form>
+                      <Form onSubmit={submitForm}>
                         <Grid container spacing={2}>
                           <Grid
                             size={{
@@ -366,6 +365,7 @@ const UserRegistration = () => {
                           >
                             <MuiTelInput
                               name="phoneNumber *"
+                              label="Phone Number *"
                               defaultCountry="CA"
                               value={values.phoneNumber}
                               onChange={(value) => setFieldValue('phoneNumber', value)}
@@ -523,7 +523,7 @@ const UserRegistration = () => {
                                                 name={`addressList[${index}].area`}
                                                 label="Coverage Area *"
                                                 {...params}
-                                                placeholder="Select Areas"
+                                                placeholder="Select Areas You Serve"
                                                 error={
                                                   touched.addressList?.[index]?.area &&
                                                   Boolean(errors.addressList?.[index]?.area)
@@ -614,7 +614,14 @@ const UserRegistration = () => {
                                             <TextField
                                               {...params}
                                               name={`expertiseList[${index}].expertise`}
-                                              label="Expertise *"
+                                              label={
+                                                userType === 'client' ? 'Service *' : 'Expertise *'
+                                              }
+                                              placeholder={
+                                                userType === 'client'
+                                                  ? 'Select Service Name'
+                                                  : 'Select Expertise Expertise'
+                                              }
                                               error={
                                                 touched.expertiseList?.[index]?.expertise &&
                                                 Boolean(errors.expertiseList?.[index]?.expertise)
@@ -632,8 +639,8 @@ const UserRegistration = () => {
                                           size={{
                                             xs: 12,
                                             sm: 12,
-                                            lg: 6,
-                                            xl: 6,
+                                            lg: 3,
+                                            xl: 3,
                                           }}
                                         >
                                           <TextField
@@ -680,45 +687,61 @@ const UserRegistration = () => {
                                             <Slider
                                               name={`expertiseList[${index}].hourlyRates`}
                                               getAriaLabel={() => 'Minimum distance'}
-                                              value={value1}
-                                              onChange={handleChange1}
-                                              valueLabelDisplay="auto"
-                                              getAriaValueText={valuetext}
-                                              disableSwap
-                                              error={
-                                                touched.expertiseList?.[index]?.hourlyRates &&
-                                                Boolean(errors.expertiseList?.[index]?.hourlyRates)
+                                              value={
+                                                values.expertiseList[index].hourlyRates || [20, 80]
                                               }
+                                              onChange={(_, newValue) => {
+                                                setFieldValue(
+                                                  `expertiseList[${index}].hourlyRates`,
+                                                  newValue,
+                                                );
+                                              }}
+                                              valueLabelDisplay="on" // 👈 shows label above thumbs
+                                              getAriaValueText={(value) => `$${value}`} // 👈 screen readers
+                                              valueLabelFormat={(value) => `$${value}`}
+                                              disableSwap
+                                              min={0}
+                                              max={100}
+                                              step={20}
                                             />
-                                            <Typography>Max</Typography>
+                                            <Typography>Max </Typography>
                                           </Box>
                                         </Grid>
                                       )}
-                                      <Grid
-                                        size={{
-                                          xs: 12,
-                                          sm: 12,
-                                          lg: 6,
-                                          xl: 6,
-                                        }}
-                                      >
-                                        <FormControlLabel
-                                          style={{ marginLeft: '0' }}
-                                          control={
-                                            <Box display="flex" alignItems="center" gap={1}>
-                                              <Typography variant="body2">Hourly</Typography>
-                                              <Switch
-                                                name={`expertiseList[${index}].isHourlyRateApplicable`}
-                                                checked={
-                                                  values.expertiseList[index].isHourlyRateApplicable
-                                                }
-                                                onChange={handleChange}
-                                              />
-                                              <Typography variant="body2">Fixed</Typography>
-                                            </Box>
-                                          }
-                                        />
-                                      </Grid>
+                                      {userType === 'professional' && (
+                                        <Grid
+                                          size={{
+                                            xs: 12,
+                                            sm: 12,
+                                            lg: 3,
+                                            xl: 3,
+                                          }}
+                                        >
+                                          <FormControlLabel
+                                            style={{ marginLeft: '0' }}
+                                            control={
+                                              <Box display="flex" alignItems="center" gap={1}>
+                                                <Tooltip title="Enable if you charge by the hour">
+                                                  <Typography variant="body2">
+                                                    {values.expertiseList[index]
+                                                      .isHourlyRateApplicable
+                                                      ? 'Hourly'
+                                                      : 'Fixed'}
+                                                  </Typography>
+                                                </Tooltip>
+                                                <Switch
+                                                  name={`expertiseList[${index}].isHourlyRateApplicable`}
+                                                  checked={
+                                                    values.expertiseList[index]
+                                                      .isHourlyRateApplicable
+                                                  }
+                                                  onChange={handleChange}
+                                                />
+                                              </Box>
+                                            }
+                                          />
+                                        </Grid>
+                                      )}
                                       {userType === 'client' && (
                                         <Grid
                                           size={{
@@ -731,6 +754,7 @@ const UserRegistration = () => {
                                           <TextField
                                             name={`expertiseList[${index}].comments`}
                                             label="Comments"
+                                            placeholder="Enter any notes or preferences..."
                                             fullWidth
                                             size="small"
                                             value={item.comments}
@@ -777,7 +801,9 @@ const UserRegistration = () => {
                                       })
                                     }
                                   >
-                                    Add Expertise
+                                    {userType === 'client'
+                                      ? 'Add Another Service'
+                                      : 'Add Another Expertise'}
                                   </Button>
                                 </Grid>
                               </>
@@ -797,9 +823,9 @@ const UserRegistration = () => {
                             Submitted Successfully!
                           </Alert>
                         </Snackbar>
-                        <Button variant="contained" type="submit">
+                        {/*  <Button variant="contained" type="submit">
                           {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
-                        </Button>
+                        </Button> */}
                       </Form>
                     );
                   }}
@@ -813,9 +839,9 @@ const UserRegistration = () => {
                   textAlign: 'center',
                 }}
               >
-                {/*   <Button variant="contained" type="submit">
+                <Button variant="contained" onClick={() => formikRef.current?.submitForm()}>
                   {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
-                </Button> */}
+                </Button>
               </Box>
             </Box>
           </Grid>
