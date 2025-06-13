@@ -3,8 +3,8 @@ import {
   Box,
   Stack,
   Typography,
-  AvatarGroup,
-  Avatar,
+ /*  AvatarGroup,
+  Avatar, */
   Container,
   Grid2 as Grid,
   useTheme,
@@ -26,9 +26,9 @@ import icon9 from 'src/assets/images/FixidiIcons/smokeDetector.svg';
 import icon10 from 'src/assets/images/FixidiIcons/gutterCleaning.svg';
 import icon11 from 'src/assets/images/FixidiIcons/landscapping.svg';
 import icon12 from 'src/assets/images/FixidiIcons/lights.svg';
-import user1 from 'src/assets/images/profile/user-1.jpg';
+/* import user1 from 'src/assets/images/profile/user-1.jpg';
 import user2 from 'src/assets/images/profile/user-2.jpg';
-import user3 from 'src/assets/images/profile/user-3.jpg';
+import user3 from 'src/assets/images/profile/user-3.jpg'; */
 
 import houseServices from '../forms/form-elements/autoComplete/data';
 import CustomTextField from '../forms/theme-elements/CustomTextField';
