@@ -24,7 +24,7 @@ import icon7 from 'src/assets/images/FixidiIcons/hauling.svg';
 import icon8 from 'src/assets/images/FixidiIcons/lightfix.svg';
 import icon9 from 'src/assets/images/FixidiIcons/smokeDetector.svg';
 import icon10 from 'src/assets/images/FixidiIcons/gutterCleaning.svg';
-import icon11 from 'src/assets/images/FixidiIcons/landscapping.svg';
+import icon11 from 'src/assets/images/FixidiIcons/gardening-machinery-svgrepo-com.svg';
 import icon12 from 'src/assets/images/FixidiIcons/lights.svg';
 /* import user1 from 'src/assets/images/profile/user-1.jpg';
 import user2 from 'src/assets/images/profile/user-2.jpg';
