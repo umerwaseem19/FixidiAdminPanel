@@ -18,7 +18,7 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
-import { Formik, Form, FieldArray, FormikProps } from 'formik';
+import { Formik, Form, FieldArray, FormikProps, FormikErrors, FormikTouched, getIn } from 'formik';
 import * as Yup from 'yup';
 import { MuiTelInput } from 'mui-tel-input';
 import { useLocation, useNavigate } from 'react-router';
@@ -39,11 +39,11 @@ interface FormValues {
   lastName: string;
   email: string;
   phoneNumber: string;
-  area: string | string[];
-  postalCode: string;
   city: string;
+  postalCode: string;
+  area: { title: string }[];
+  areaLine: string; // for clients
   expertiseList: ExpertiseEntry[];
-  serviceId: string;
   userType: 'client' | 'professional';
 }
 
@@ -71,6 +71,7 @@ const UserRegistration = () => {
             .of(Yup.object().shape({ title: Yup.string().required() }))
             .min(1, 'Select at least one area')
             .required('Coverage area is required'),
+
     expertiseList: Yup.array().of(
       Yup.object().shape({
         expertise: Yup.string()
@@ -185,18 +186,16 @@ const UserRegistration = () => {
                     phoneNumber: '',
                     city: '',
                     postalCode: '',
-                    area: userType === 'professional' ? [] : '',
-                    /*  addressList:
-                      userType === 'client'
-                        ? [{ area: '', postalCode: '', city: '' }]
-                        : [{ area: '', postalCode: '', city: '' }], */
+                    //area: userType === 'professional' ? [] : '',
+                    area: [], // ✅ Always an array for Autocomplete
+                    areaLine: '',
                     expertiseList: [
                       {
                         expertise: serviceType || '',
-                        hourlyRates: userType === 'professional' ? '' : [20, 80], // Initialize
+                        serviceId: '',
+                        hourlyRates: userType === 'professional' ? [] : [20, 80], // Initialize
                         comments: '',
                         isHourlyRateApplicable: false,
-                        serviceId: '',
                       },
                     ],
 
@@ -204,7 +203,7 @@ const UserRegistration = () => {
                   }}
                   validationSchema={validationSchema}
                   validateOnMount
-                  validationContext={{ userType }}
+                //  validationContext={{ userType }}
                   onSubmit={async (values) => {
                     try {
                       const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
@@ -212,12 +211,11 @@ const UserRegistration = () => {
                         ...values,
                         phoneNumber: cleanedPhone,
                         serviceName: values.expertiseList.map((e) => e.expertise),
-
-                        area: Array.isArray(values.area)
-                          ? values.area.map((item) => item.title)
-                          : typeof values.area === 'string'
-                          ? [values.area]
-                          : [],
+                        areaLine: Yup.string().required('Address line is required'),
+                        area: Yup.array()
+                          .of(Yup.object().shape({ title: Yup.string().required() }))
+                          .min(1, 'Select at least one area')
+                          .required('Coverage area is required'),
                         /*  area: Array.isArray(values.addressList[0].area)
                           ? values.addressList[0].area.map((a) => a.title)
                           : [values.addressList[0].area],
@@ -429,15 +427,15 @@ const UserRegistration = () => {
                               }}
                             >
                               <TextField
-                                name="area"
+                                name="areaLine"
                                 label="Address Line *"
                                 fullWidth
                                 size="small"
-                                value={values.area}
+                                value={values.areaLine}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={touched.area && Boolean(errors.area)}
-                                helperText={touched.area && errors.area}
+                                error={touched.areaLine && Boolean(errors.areaLine)}
+                                helperText={touched.areaLine && errors.areaLine}
                               />
                             </Grid>
                           )}
@@ -484,7 +482,14 @@ const UserRegistration = () => {
                                     label="Coverage Area *"
                                     placeholder="Select Areas You Serve"
                                     error={touched.area && Boolean(errors.area)}
-                                    helperText={touched.area && errors.area}
+                                    helperText={
+                                      touched.area &&
+                                      (typeof errors.area === 'string'
+                                        ? errors.area
+                                        : Array.isArray(errors.area)
+                                        ? 'Coverage area is required'
+                                        : '')
+                                    }
                                   />
                                 )}
                               />
@@ -555,12 +560,23 @@ const UserRegistration = () => {
                                                   : 'Select Expertise Expertise'
                                               }
                                               error={
-                                                touched.expertiseList?.[index]?.expertise &&
-                                                Boolean(errors.expertiseList?.[index]?.expertise)
+                                                getIn(
+                                                  touched,
+                                                  `expertiseList[${index}].expertise`,
+                                                ) &&
+                                                Boolean(
+                                                  getIn(
+                                                    errors,
+                                                    `expertiseList[${index}].expertise`,
+                                                  ),
+                                                )
                                               }
                                               helperText={
-                                                touched.expertiseList?.[index]?.expertise &&
-                                                errors.expertiseList?.[index]?.expertise
+                                                getIn(
+                                                  touched,
+                                                  `expertiseList[${index}].expertise`,
+                                                ) &&
+                                                getIn(errors, `expertiseList[${index}].expertise`)
                                               }
                                             />
                                           )}
@@ -593,14 +609,14 @@ const UserRegistration = () => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={
-                                              Array.isArray(errors.expertiseList) &&
-                                              touched.expertiseList?.[index]?.hourlyRates &&
-                                              Boolean(errors.expertiseList?.[index]?.hourlyRates)
+                                              getIn(touched, `expertiseList[${index}].expertise`) &&
+                                              Boolean(
+                                                getIn(errors, `expertiseList[${index}].expertise`),
+                                              )
                                             }
                                             helperText={
-                                              Array.isArray(errors.expertiseList) &&
-                                              touched.expertiseList?.[index]?.hourlyRates &&
-                                              errors.expertiseList?.[index]?.hourlyRates
+                                              getIn(touched, `expertiseList[${index}].expertise`) &&
+                                              getIn(errors, `expertiseList[${index}].expertise`)
                                             }
                                           />
                                         </Grid>
