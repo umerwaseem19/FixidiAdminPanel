@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Grid2 as Grid,
   Box,
@@ -18,7 +18,7 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
-import { Formik, Form, FieldArray, FormikProps, FormikErrors, FormikTouched, getIn } from 'formik';
+import { Formik, Form, FieldArray, FormikProps,  getIn } from 'formik';
 import * as Yup from 'yup';
 import { MuiTelInput } from 'mui-tel-input';
 import { useLocation, useNavigate } from 'react-router';
@@ -823,7 +823,7 @@ const canadaAreas = [
   { title: 'Halifax' },
 ];
 
-const canadaCityAreas = [
+/* const canadaCityAreas = [
   { title: 'Downtown' },
   { title: 'Scarborough' },
   { title: 'Richmond Hill' },
@@ -844,4 +844,4 @@ const canadaCityAreas = [
   { title: 'Oakville' },
   { title: 'Burlington' },
   { title: 'Newmarket' },
-];
+]; */
