@@ -18,7 +18,7 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
-import { Formik, Form, FieldArray, FormikProps,  getIn } from 'formik';
+import { Formik, Form, FieldArray, FormikProps, getIn } from 'formik';
 import * as Yup from 'yup';
 import { MuiTelInput } from 'mui-tel-input';
 import { useLocation, useNavigate } from 'react-router';
@@ -64,13 +64,19 @@ const UserRegistration = () => {
     postalCode:
       userType === 'client' ? Yup.string().required('Postal code is required') : Yup.string(),
 
-    area:
-      userType === 'client'
-        ? Yup.string().required('Address line is required')
-        : Yup.array()
-            .of(Yup.object().shape({ title: Yup.string().required() }))
-            .min(1, 'Select at least one area')
-            .required('Coverage area is required'),
+    areaLine: Yup.string().when('userType', {
+      is: 'client',
+      then: Yup.string().required('Address line is required'),
+      otherwise: Yup.string().notRequired(),
+    }),
+    area: Yup.array().when('userType', {
+      is: 'professional',
+      then: Yup.array()
+        .of(Yup.object().shape({ title: Yup.string().required() }))
+        .min(1, 'Select at least one area')
+        .required('Coverage area is required'),
+      otherwise: Yup.array().notRequired(),
+    }),
 
     expertiseList: Yup.array().of(
       Yup.object().shape({
@@ -203,7 +209,7 @@ const UserRegistration = () => {
                   }}
                   validationSchema={validationSchema}
                   validateOnMount
-                //  validationContext={{ userType }}
+                  //  validationContext={{ userType }}
                   onSubmit={async (values) => {
                     try {
                       const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
@@ -211,22 +217,11 @@ const UserRegistration = () => {
                         ...values,
                         phoneNumber: cleanedPhone,
                         serviceName: values.expertiseList.map((e) => e.expertise),
-                        areaLine: Yup.string().required('Address line is required'),
-                        area: Yup.array()
-                          .of(Yup.object().shape({ title: Yup.string().required() }))
-                          .min(1, 'Select at least one area')
-                          .required('Coverage area is required'),
-                        /*  area: Array.isArray(values.addressList[0].area)
-                          ? values.addressList[0].area.map((a) => a.title)
-                          : [values.addressList[0].area],
-                        postalCode: values.addressList[0]?.postalCode || '',
-                        city: values.addressList[0]?.city || '',
-                        addressList: userType === 'professional' ? values.addressList : undefined, */
                       };
                       console.log('payload ==>', payload);
 
                       await fetch(
-                        'https://script.google.com/macros/s/AKfycbxa38zs6vgfBUwoxXJUCbDfx-aqCs12PQiCsYrsdo7a8iLzrhsNEMtSR2Y3OXIKlP4p0g/exec',
+                        'https://script.google.com/macros/s/AKfycbwMzlpivNVCyZs1vSn-OleSpZHOIhMaNk1Pw6nvxEaspf9fanP3T4TYeExz1IAZfJp0Tg/exec',
                         {
                           method: 'POST',
                           body: JSON.stringify(payload),
