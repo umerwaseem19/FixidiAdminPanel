@@ -220,18 +220,24 @@ const UserRegistration = () => {
                       };
                       console.log('payload ==>', payload);
 
-                      await fetch(
-                        'https://script.google.com/macros/s/AKfycbwMzlpivNVCyZs1vSn-OleSpZHOIhMaNk1Pw6nvxEaspf9fanP3T4TYeExz1IAZfJp0Tg/exec',
+                       const response = await fetch(
+                        'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
                         {
                           method: 'POST',
-                          body: JSON.stringify(payload),
                           mode: 'no-cors',
                           headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(payload),
                         },
                       );
+                      const result = await response.json();
+                      console.log(result);
 
-                      setOpenAlert(true);
-                      setTimeout(() => navigate('/FixidiLandingPage'), 2000);
+                      if (result.status === 'success') {
+                        setOpenAlert(true);
+                        setTimeout(() => navigate('/FixidiLandingPage'), 2000);
+                      } else {
+                        console.error('Submission failed:', result.message);
+                      }
                     } catch (error) {
                       console.error('Error while submitting user:', error);
                     }
