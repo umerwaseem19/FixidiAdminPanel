@@ -29,7 +29,10 @@ import img1 from 'src/assets/images/FixidiIcons/userRegistration.svg';
 interface ExpertiseEntry {
   expertise: string;
   serviceId: string | number;
-  hourlyRates: number[];
+  arrHourlyRates: [];
+  minimumHourlyRate: number;
+  maximumHourlyRate: number;
+  rate: number;
   comments: string;
   isHourlyRateApplicable: false;
 }
@@ -87,7 +90,7 @@ const UserRegistration = () => {
           )
           .required('Expertise is required'),
         // Conditional hourly rates for professionals
-        hourlyRates: Yup.mixed().when('$userType', {
+        /*  hourlyRates: Yup.mixed().when('$userType', {
           is: 'client',
           then: Yup.array()
             .of(Yup.number().min(0).max(200))
@@ -97,9 +100,19 @@ const UserRegistration = () => {
             .min(0, 'Rate must be at least 0')
             .max(200, 'Rate cannot exceed 200')
             .nullable(true),
-        }),
+        }), */
 
         comments: Yup.string(),
+        rate: Yup.number().when('$userType', {
+          is: 'professional',
+          then: Yup.number()
+            .min(0, 'Rate must be at least 0')
+            .max(200, 'Rate cannot exceed 200')
+            .required('Rate is required for professionals'),
+          otherwise: Yup.number().notRequired(),
+        }),
+
+        arrHourlyRates: Yup.array().of(Yup.number()).notRequired(),
       }),
     ),
   });
@@ -199,7 +212,10 @@ const UserRegistration = () => {
                       {
                         expertise: serviceType || '',
                         serviceId: '',
-                        hourlyRates: userType === 'professional' ? [] : [20, 80], // Initialize
+                        arrHourlyRates: [],
+                        minimumHourlyRate: userType === 'professional' ? 0 : 20,
+                        maximumHourlyRate: userType === 'professional' ? 0 : 80,
+                        rate: userType === 'client' ? 0 : 20,
                         comments: '',
                         isHourlyRateApplicable: false,
                       },
@@ -220,24 +236,30 @@ const UserRegistration = () => {
                       };
                       console.log('payload ==>', payload);
 
-                       const response = await fetch(
+                      const response = await fetch(
                         'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
                         {
                           method: 'POST',
-                          //mode: 'no-cors',
+                          mode: 'no-cors',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload),
                         },
-                      );
-                      const result = await response.json();
-                      console.log(result);
+                      )
+                        .then((res) => res.json())
+                        .then((data) => {
+                          setTimeout(() => navigate('/FixidiLandingPage'), 2000);
+                          console.log(data);
+                        })
+                        .catch((err) => console.error(err));
+                   /*    const result = await response.json();
+                      console.log(result); */
 
-                      if (result.status === 'success') {
+                    /*   if (result.status === 'success') {
                         setOpenAlert(true);
                         setTimeout(() => navigate('/FixidiLandingPage'), 2000);
                       } else {
                         console.error('Submission failed:', result.message);
-                      }
+                      } */
                     } catch (error) {
                       console.error('Error while submitting user:', error);
                     }
@@ -606,7 +628,7 @@ const UserRegistration = () => {
                                             }}
                                             fullWidth
                                             size="small"
-                                            value={item.hourlyRates}
+                                            value={item.rate}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={
@@ -636,22 +658,35 @@ const UserRegistration = () => {
                                             <Typography>Min</Typography>{' '}
                                             {/* This acts like a start adornment */}
                                             <Slider
-                                              name={`expertiseList[${index}].hourlyRates`}
+                                              name={`expertiseList[${index}].arrHourlyRates`}
                                               getAriaLabel={() => 'Minimum distance'}
+                                              value={[
+                                                values.expertiseList[index].minimumHourlyRate,
+                                                values.expertiseList[index].maximumHourlyRate,
+                                              ]}
                                               /* value={
-                                                values.expertiseList[index].hourlyRates || [20, 80]
+                                                values.expertiseList[index].minimumHourlyRate
+                                                  ? values.expertiseList[index].minimumHourlyRate
+                                                  : [
+                                                      values.expertiseList[index].minimumHourlyRate,
+                                                      values.expertiseList[index].maximumHourlyRate,
+                                                    ]
                                               } */
-                                              value={
-                                                Array.isArray(
-                                                  values.expertiseList[index].hourlyRates,
-                                                )
-                                                  ? values.expertiseList[index].hourlyRates
-                                                  : [20, 80]
-                                              }
                                               onChange={(_, newValue) => {
+                                                const [minRate, maxRate] = newValue as number[];
+
+                                                // Update all related fields
                                                 setFieldValue(
-                                                  `expertiseList[${index}].hourlyRates`,
-                                                  newValue,
+                                                  `expertiseList[${index}].minimumHourlyRate`,
+                                                  minRate,
+                                                );
+                                                setFieldValue(
+                                                  `expertiseList[${index}].maximumHourlyRate`,
+                                                  maxRate,
+                                                );
+                                                setFieldValue(
+                                                  `expertiseList[${index}].arrHourlyRates`,
+                                                  [minRate, maxRate],
                                                 );
                                               }}
                                               valueLabelDisplay="on" // 👈 shows label above thumbs
@@ -660,7 +695,7 @@ const UserRegistration = () => {
                                               disableSwap
                                               min={0}
                                               max={100}
-                                              step={20}
+                                              step={10}
                                             />
                                             <Typography>Max </Typography>
                                           </Box>
@@ -754,7 +789,9 @@ const UserRegistration = () => {
                                       push({
                                         expertise: '',
                                         serviceId: '',
-                                        hourlyRates: '',
+                                        minimumHourlyRate: userType === 'professional' ? 0 : 20,
+                                        maximumHourlyRate: userType === 'professional' ? 0 : 80,
+                                        rate: userType === 'client' ? 0 : 20,
                                         comments: '',
                                         isHourlyRateApplicable: false,
                                       })
