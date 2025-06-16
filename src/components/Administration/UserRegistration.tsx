@@ -224,7 +224,7 @@ const UserRegistration = () => {
                         'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
                         {
                           method: 'POST',
-                          mode: 'no-cors',
+                          //mode: 'no-cors',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload),
                         },
