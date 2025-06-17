@@ -236,7 +236,7 @@ const UserRegistration = () => {
                       };
                       console.log('payload ==>', payload);
 
-                      const response = await fetch(
+                     await fetch(
                         'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
                         {
                           method: 'POST',
@@ -244,13 +244,15 @@ const UserRegistration = () => {
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload),
                         },
-                      )
+                      ) 
+                      setTimeout(() => navigate('/FixidiLandingPage'), 2000);
+                      /*  .then(setTimeout(() => navigate('/FixidiLandingPage'), 2000);)
                         .then((res) => res.json())
                         .then((data) => {
                           setTimeout(() => navigate('/FixidiLandingPage'), 2000);
                           console.log(data);
                         })
-                        .catch((err) => console.error(err));
+                        .catch((err) => console.error(err)); */
                    /*    const result = await response.json();
                       console.log(result); */
 
