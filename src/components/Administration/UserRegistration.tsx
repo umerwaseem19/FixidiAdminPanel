@@ -14,7 +14,9 @@ import {
   Switch,
   Slider,
   Tooltip,
+  Divider,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PageContainer from 'src/components/container/PageContainer';
@@ -177,7 +179,7 @@ const UserRegistration = () => {
               xs: 12,
               sm: 12,
               lg: 5,
-              xl: 4,
+              xl: 5,
             }}
           >
             <Box display="flex" flexDirection="column" height="100vh">
@@ -236,7 +238,7 @@ const UserRegistration = () => {
                       };
                       console.log('payload ==>', payload);
 
-                     await fetch(
+                      await fetch(
                         'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
                         {
                           method: 'POST',
@@ -244,7 +246,7 @@ const UserRegistration = () => {
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload),
                         },
-                      ) 
+                      );
                       setTimeout(() => navigate('/FixidiLandingPage'), 2000);
                       /*  .then(setTimeout(() => navigate('/FixidiLandingPage'), 2000);)
                         .then((res) => res.json())
@@ -253,10 +255,10 @@ const UserRegistration = () => {
                           console.log(data);
                         })
                         .catch((err) => console.error(err)); */
-                   /*    const result = await response.json();
+                      /*    const result = await response.json();
                       console.log(result); */
 
-                    /*   if (result.status === 'success') {
+                      /*   if (result.status === 'success') {
                         setOpenAlert(true);
                         setTimeout(() => navigate('/FixidiLandingPage'), 2000);
                       } else {
@@ -309,6 +311,20 @@ const UserRegistration = () => {
                     return (
                       <Form onSubmit={submitForm}>
                         <Grid container spacing={2}>
+                          <Grid
+                            size={{
+                              xs: 12,
+                              sm: 12,
+                              lg: 12,
+                              xl: 12,
+                            }}
+                          >
+
+                          <Divider  textAlign="left"><b>
+                          Contact Information
+                          </b>
+                          </Divider>
+                          </Grid>
                           <Grid
                             size={{
                               xs: 12,
@@ -390,6 +406,21 @@ const UserRegistration = () => {
                               helperText={touched.phoneNumber && errors.phoneNumber}
                             />
                           </Grid>
+
+                           <Grid
+                            size={{
+                              xs: 12,
+                              sm: 12,
+                              lg: 12,
+                              xl: 12,
+                            }}
+                          >
+
+                          <Divider  textAlign="left"><b>
+                          Address Details
+                          </b>
+                          </Divider>
+                          </Grid>
                           <Grid
                             size={{
                               xs: 12,
@@ -447,8 +478,8 @@ const UserRegistration = () => {
                               size={{
                                 xs: 12,
                                 sm: 12,
-                                lg: 6,
-                                xl: 6,
+                                lg: 12,
+                                xl: 12,
                               }}
                             >
                               <TextField
@@ -520,7 +551,20 @@ const UserRegistration = () => {
                               />
                             </Grid>
                           )}
+                       <Grid
+                            size={{
+                              xs: 12,
+                              sm: 12,
+                              lg: 12,
+                              xl: 12,
+                            }}
+                          >
 
+                          <Divider  textAlign="left"><b>
+                          Service Details
+                          </b>
+                          </Divider>
+                          </Grid>
                           <FieldArray name="expertiseList">
                             {({ push, remove }) => (
                               <>
@@ -617,7 +661,7 @@ const UserRegistration = () => {
                                           }}
                                         >
                                           <TextField
-                                            name={`expertiseList[${index}].hourlyRates`}
+                                            name={`expertiseList[${index}].rate`}
                                             label="Rates *"
                                             slotProps={{
                                               input: {
@@ -630,7 +674,7 @@ const UserRegistration = () => {
                                             }}
                                             fullWidth
                                             size="small"
-                                            value={item.rate}
+                                            value={values.expertiseList[index].rate}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={
@@ -708,8 +752,8 @@ const UserRegistration = () => {
                                           size={{
                                             xs: 12,
                                             sm: 12,
-                                            lg: 3,
-                                            xl: 3,
+                                            lg: 2,
+                                            xl: 2,
                                           }}
                                         >
                                           <FormControlLabel
@@ -763,14 +807,16 @@ const UserRegistration = () => {
                                         size={{
                                           xs: 2,
                                           sm: 12,
-                                          lg: 3,
-                                          xl: 3,
+                                          lg: 1,
+                                          xl: 1,
+                                          
                                         }}
+                                        sx={{ px: 1 }}
                                       >
                                         {index > 0 && (
-                                          <Button color="error" onClick={() => remove(index)}>
-                                            Remove
-                                          </Button>
+                                        <Tooltip title="Remove">
+                                          <DeleteIcon color="error" onClick={() => remove(index)} />
+                                        </Tooltip>
                                         )}
                                       </Grid>
                                     </Grid>

@@ -10,7 +10,6 @@ import {
   useTheme,
   Autocomplete,
 } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
 
 // icons
 import icon1 from 'src/assets/images/FixidiIcons/generalHandyman.svg';
@@ -236,7 +235,7 @@ const FixidiLandingPage = () => {
 
               <Stack direction="row" flexWrap="wrap" justifyContent="center"  mb={2}>
                 {Frameworks.slice(0, 6).map((fw, i) => (
-                  <Tooltip title={fw.name} key={i}>
+             
                     <Box
                       width="120px"
                       height="100px"
@@ -260,12 +259,11 @@ const FixidiLandingPage = () => {
                       />
                       <b>{fw.name}</b>
                     </Box>
-                  </Tooltip>
+        
                 ))}
               </Stack>
               <Stack direction="row" flexWrap="wrap" justifyContent="center" mb={2}>
                 {Frameworks.slice(6, 12).map((fw, i) => (
-                  <Tooltip title={fw.name} key={i}>
                     <Box
                       width="120px"
                       height="100px"
@@ -288,7 +286,6 @@ const FixidiLandingPage = () => {
                       />
                       <b>{fw.name}</b>
                     </Box>
-                  </Tooltip>
                 ))}
               </Stack>
 
