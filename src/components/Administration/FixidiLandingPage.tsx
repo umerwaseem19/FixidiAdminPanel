@@ -234,7 +234,7 @@ const FixidiLandingPage = () => {
               </Stack>
 
               <Stack direction="row" flexWrap="wrap" justifyContent="center"  mb={2}>
-                {Frameworks.slice(0, 6).map((fw, i) => (
+                {Frameworks.slice(0, 6).map((fw) => (
              
                     <Box
                       width="120px"
@@ -263,7 +263,7 @@ const FixidiLandingPage = () => {
                 ))}
               </Stack>
               <Stack direction="row" flexWrap="wrap" justifyContent="center" mb={2}>
-                {Frameworks.slice(6, 12).map((fw, i) => (
+                {Frameworks.slice(6, 12).map((fw) => (
                     <Box
                       width="120px"
                       height="100px"
