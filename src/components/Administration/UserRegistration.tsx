@@ -179,7 +179,7 @@ const UserRegistration = () => {
               xs: 12,
               sm: 12,
               lg: 5,
-              xl: 5,
+              xl: 4,
             }}
           >
             <Box display="flex" flexDirection="column" height="100vh">
