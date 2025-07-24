@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const API_BASE_URL = 'http://localhost:8080'; // replace with your actual backend URL
-const API_BASE_URL = 'https:/fixidi'; // replace with your actual backend URL
+const API_BASE_URL = '/fixidi'; // replace with your actual backend URL
 
 const apiService = {
   addUser: async (userData:any) => {
