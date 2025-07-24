@@ -28,6 +28,7 @@ import { useLocation, useNavigate } from 'react-router';
 import houseServices from '../forms/form-elements/autoComplete/data';
 import Logo from 'src/layouts/full/shared/logo/Logo';
 import img1 from 'src/assets/images/FixidiIcons/userRegistration.svg';
+import apiService from 'src/api.service';
 interface ExpertiseEntry {
   expertise: string;
   serviceId: string | number;
@@ -207,8 +208,8 @@ const UserRegistration = () => {
                     phoneNumber: '',
                     city: '',
                     postalCode: '',
-                    //area: userType === 'professional' ? [] : '',
-                    area: [], // ✅ Always an array for Autocomplete
+                   
+                    area: [], 
                     areaLine: '',
                     expertiseList: [
                       {
@@ -216,7 +217,7 @@ const UserRegistration = () => {
                         serviceId: '',
                         arrHourlyRates: [],
                         minimumHourlyRate: userType === 'professional' ? 0 : 20,
-                        maximumHourlyRate: userType === 'professional' ? 0 : 80,
+                        maximumHourlyRate: userType === 'professional' ? 0 : 30,
                         rate: userType === 'client' ? 0 : 20,
                         comments: '',
                         isHourlyRateApplicable: false,
@@ -238,16 +239,33 @@ const UserRegistration = () => {
                       };
                       console.log('payload ==>', payload);
 
+
+ 
+                      const result = await apiService.addUser(payload);
+                      console.log('API Result ==>', result);
+
+                      // Check for conflict or error in response
+                      if (
+                        result?.status === 'CONFLICT' ||
+                        result?.message === 'User already exists'
+                      ) {
+                        console.error('User already exists!');
+                        // Display this to the user if needed
+                        return;
+                      }
+
+
                       await fetch(
-                        'https://script.google.com/macros/s/AKfycbwjGxE9ZNBKMC-VlC_jmMDKqfmetCdb4Sqaq6OsW7yRQGeF0tifGnAHqmJM8pYDKeYH/exec',
+                        'https://script.google.com/macros/s/AKfycbzA1Ej6HTMfnaCVGN-ms1mdWDKi4ePvPN_pntFRqg6WdOtwREtRzL5fX1ZMoZhllb_B/exec',
                         {
                           method: 'POST',
-                          mode: 'no-cors',
+                         mode: 'no-cors',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(payload),
                         },
                       );
-                      setTimeout(() => navigate('/FixidiLandingPage'), 2000);
+                      setOpenAlert(true)
+                   //   setTimeout(() => navigate('/FixidiLandingPage'), 2000);
                       /*  .then(setTimeout(() => navigate('/FixidiLandingPage'), 2000);)
                         .then((res) => res.json())
                         .then((data) => {
@@ -838,7 +856,7 @@ const UserRegistration = () => {
                                         expertise: '',
                                         serviceId: '',
                                         minimumHourlyRate: userType === 'professional' ? 0 : 20,
-                                        maximumHourlyRate: userType === 'professional' ? 0 : 80,
+                                        maximumHourlyRate: userType === 'professional' ? 0 : 30,
                                         rate: userType === 'client' ? 0 : 20,
                                         comments: '',
                                         isHourlyRateApplicable: false,
@@ -860,7 +878,7 @@ const UserRegistration = () => {
                           autoHideDuration={2000}
                           onClose={() => {
                             setOpenAlert(false);
-                            //  navigate('/FixidiLandingPage');
+                              navigate('/FixidiLandingPage');
                           }}
                         >
                           <Alert severity="success" sx={{ width: '100%' }}>
