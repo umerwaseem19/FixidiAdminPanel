@@ -29,6 +29,7 @@ import houseServices from '../forms/form-elements/autoComplete/data';
 import Logo from 'src/layouts/full/shared/logo/Logo';
 import img1 from 'src/assets/images/FixidiIcons/userRegistration.svg';
 import apiService from 'src/api.service';
+import Spinner from 'src/views/spinner/Spinner';
 interface ExpertiseEntry {
   expertise: string;
   serviceId: string | number;
@@ -59,6 +60,7 @@ const UserRegistration = () => {
   const navigate = useNavigate();
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [loading, setLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const { userType, serviceType, houseServiceId } = location.state || {};
   const validationSchema = Yup.object().shape({
@@ -216,8 +218,8 @@ const UserRegistration = () => {
                         expertise: serviceType || '',
                         serviceId: '',
                         arrHourlyRates: [],
-                        minimumHourlyRate: userType === 'professional' ? 0 : 20,
-                        maximumHourlyRate: userType === 'professional' ? 0 : 30,
+                        minimumHourlyRate: userType === 'professional' ? 0 : 25,
+                        maximumHourlyRate: userType === 'professional' ? 0 : 50,
                         rate: userType === 'client' ? 0 : 20,
                         comments: '',
                         isHourlyRateApplicable: false,
@@ -230,7 +232,9 @@ const UserRegistration = () => {
                   validateOnMount
                   //  validationContext={{ userType }}
                   onSubmit={async (values) => {
+                    
                     try {
+                          setLoading(true);
                       const cleanedPhone = values.phoneNumber.replace(/\s+/g, '');
                       const payload = {
                         ...values,
@@ -244,6 +248,7 @@ const UserRegistration = () => {
                       const result = await apiService.addUser(payload);
                       console.log('API Result ==>', result);
 
+                      
                       // Check for conflict or error in response
                       if (
                         result?.status === 'CONFLICT' ||
@@ -285,6 +290,9 @@ const UserRegistration = () => {
                     } catch (error) {
                       console.error('Error while submitting user:', error);
                     }
+                    finally {
+          setLoading(false); // hide loader
+        }
                   }}
                 >
                   {({
@@ -327,6 +335,8 @@ const UserRegistration = () => {
                       }
                     }, [houseServiceId, serviceType, houseServices, setFieldValue]);
                     return (
+                      <>
+                      {loading && <Spinner />}
                       <Form onSubmit={submitForm}>
                         <Grid container spacing={2}>
                           <Grid
@@ -737,8 +747,14 @@ const UserRegistration = () => {
                                                     ]
                                               } */
                                               onChange={(_, newValue) => {
-                                                const [minRate, maxRate] = newValue as number[];
-
+                                                let  [minRate, maxRate] = newValue as number[];
+if (maxRate - minRate < 25) {
+      if (minRate !== values.expertiseList[index].minimumHourlyRate) {
+        minRate = maxRate - 25;
+      } else {
+        maxRate = minRate + 25;
+      }
+    }
                                                 // Update all related fields
                                                 setFieldValue(
                                                   `expertiseList[${index}].minimumHourlyRate`,
@@ -759,7 +775,23 @@ const UserRegistration = () => {
                                               disableSwap
                                               min={0}
                                               max={100}
-                                              step={10}
+                                              step={25}
+                                              sx={{
+    '& .MuiSlider-valueLabel': {
+      backgroundColor: '#5D87FF',
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: '0.85rem',
+      borderRadius: '6px',
+      padding: '4px 8px',
+    },
+    '& .MuiSlider-thumb': {
+      border: '2px solid #5D87FF',
+    },
+    '& .MuiSlider-track': {
+      backgroundColor: '#5D87FF',
+    },
+  }}
                                             />
                                             <Typography>Max </Typography>
                                           </Box>
@@ -855,8 +887,8 @@ const UserRegistration = () => {
                                       push({
                                         expertise: '',
                                         serviceId: '',
-                                        minimumHourlyRate: userType === 'professional' ? 0 : 20,
-                                        maximumHourlyRate: userType === 'professional' ? 0 : 30,
+                                        minimumHourlyRate: userType === 'professional' ? 0 : 25,
+                                        maximumHourlyRate: userType === 'professional' ? 0 : 50,
                                         rate: userType === 'client' ? 0 : 20,
                                         comments: '',
                                         isHourlyRateApplicable: false,
@@ -875,13 +907,14 @@ const UserRegistration = () => {
 
                         <Snackbar
                           open={openAlert}
-                          autoHideDuration={2000}
+                          autoHideDuration={5000}
                           onClose={() => {
                             setOpenAlert(false);
                               navigate('/FixidiLandingPage');
                           }}
+                    
                         >
-                          <Alert severity="success" sx={{ width: '100%' }}>
+                          <Alert severity="success" sx={{ width: '100%',background:"#5D87FF", color:"white" }}>
                             Submitted Successfully!
                           </Alert>
                         </Snackbar>
@@ -889,6 +922,7 @@ const UserRegistration = () => {
                           {userType === 'client' ? 'Hire a Professional' : 'Become a Professional'}
                         </Button> */}
                       </Form>
+                      </>
                     );
                   }}
                 </Formik>

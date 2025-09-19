@@ -14,14 +14,14 @@ const footerLinks = [
     children: [
       {
         title: true,
-        titleText: 'Applications',
+        titleText: 'Company Info',
       },
       {
         title: false,
-        titleText: 'Kanban',
+        titleText: 'We provide reliable household services including cleaning, plumbing, electrical, and more — trusted by 10,000+ households.',
         link: 'https://modernize-react.adminmart.com/apps/kanban',
       },
-      {
+    /*   {
         title: false,
         titleText: 'Invoice List',
         link: 'https://modernize-react.adminmart.com/apps/invoice/list',
@@ -45,7 +45,7 @@ const footerLinks = [
         title: false,
         titleText: 'Blog',
         link: 'https://modernize-react.adminmart.com/frontend-pages/blog',
-      },
+      }, */
     ],
   },
   {
@@ -53,31 +53,31 @@ const footerLinks = [
     children: [
       {
         title: true,
-        titleText: 'Forms',
+        titleText: 'Quick Links',
       },
       {
         title: false,
-        titleText: 'Form Layout',
+        titleText: 'Home',
         link: 'https://modernize-react.adminmart.com/forms/form-layouts',
       },
       {
         title: false,
-        titleText: 'Form Horizontal',
+        titleText: 'Services',
         link: 'https://modernize-react.adminmart.com/forms/form-horizontal',
       },
       {
         title: false,
-        titleText: 'Form Wizard',
+        titleText: 'Blog',
         link: 'https://modernize-react.adminmart.com/forms/form-wizard',
       },
       {
         title: false,
-        titleText: 'Form Validation',
+        titleText: 'Invoice',
         link: 'https://modernize-react.adminmart.com/forms/form-validation',
       },
       {
         title: false,
-        titleText: 'Tiptap Editor',
+        titleText: 'FAQ',
         link: 'https://modernize-react.adminmart.com/forms/form-tiptap',
       },
     ],
@@ -87,24 +87,24 @@ const footerLinks = [
     children: [
       {
         title: true,
-        titleText: 'Tables',
+        titleText: 'Policy Links',
       },
       {
         title: false,
-        titleText: 'Basic Table',
+        titleText: 'Privacy Policy',
         link: 'https://modernize-react.adminmart.com/tables/basic',
       },
       {
         title: false,
-        titleText: 'Fixed Header',
+        titleText: 'Terms & Conditions',
         link: 'https://modernize-react.adminmart.com/tables/fixed-header',
       },
       {
         title: false,
-        titleText: 'Pagination Table',
+        titleText: 'Cancellation & Refund Policy',
         link: 'https://modernize-react.adminmart.com/tables/pagination',
       },
-      {
+     /*  {
         title: false,
         titleText: 'React Dense Table',
         link: 'https://modernize-react.adminmart.com/react-tables/dense',
@@ -118,7 +118,7 @@ const footerLinks = [
         title: false,
         titleText: 'Drag n Drop Table',
         link: 'https://modernize-react.adminmart.com/react-tables/drag-drop',
-      },
+      }, */
     ],
   },
 ];

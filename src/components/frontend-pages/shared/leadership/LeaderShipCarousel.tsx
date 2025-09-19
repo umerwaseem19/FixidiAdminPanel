@@ -1,10 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
-import { styled } from '@mui/material/styles';
+import 'slick-carousel/slick/slick-theme.css';
+import { styled, useTheme } from '@mui/material/styles';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import './carousel.css';
-import { useTheme } from '@mui/material/styles';
 
 import user1 from 'src/assets/images/frontend-pages/homepage/user1.jpg';
 import user2 from 'src/assets/images/frontend-pages/homepage/user2.jpg';
@@ -68,7 +68,7 @@ const LeaderShipCarousel = () => {
   const theme = useTheme();
 
   const slideStyle = {
-    padding: '0 30px', // Add padding between slides
+    padding: '0 15px',
   };
 
   const settings = {
@@ -76,8 +76,6 @@ const LeaderShipCarousel = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    className: 'slider variable-width',
-    centerMode: false,
     slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -100,155 +98,71 @@ const LeaderShipCarousel = () => {
   };
 
   const UserBox = styled(Box)(() => ({
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.default : 'white',
-    maxWidth: 'calc(100% - 51px)',
-    marginLeft: '15px',
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? theme.palette.background.default
+        : 'white',
+    maxWidth: 'calc(100% - 30px)',
+    margin: '0 auto',
     borderRadius: '8px',
-    marginTop: '-30px !important',
+    marginTop: '-30px',
     boxShadow: '0px 6px 12px rgba(127, 145, 156, 0.12)',
     marginBottom: '10px',
   }));
 
+  const members = [
+    { img: user1, name: 'Alex Martinez', role: 'CEO & Co-Founder' },
+    { img: user2, name: 'Jordan Nguyen', role: 'CTO & Co-Founder' },
+    { img: user3, name: 'Taylor Roberts', role: 'Product Manager' },
+    { img: user4, name: 'Morgan Patel', role: 'Lead Developer' },
+    { img: user5, name: 'Kiana Collins', role: 'Software Developer' },
+  ];
+
   return (
-    <Slider {...settings} className="leadership-carousel">
-      <div style={slideStyle}>
-        <img src={user1} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Alex Martinez
-          </Typography>
-          <Typography variant="body1">CEO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user2} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Jordan Nguyen
-          </Typography>
-          <Typography variant="body1">CTO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user3} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Taylor Roberts
-          </Typography>
-          <Typography variant="body1">Product Manager</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user4} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox px="10px" py="16px" textAlign="center" position="relative" zIndex="1">
-          <Typography variant="h5" mb={1}>
-            Morgan Patel
-          </Typography>
-          <Typography variant="body1">Lead Developer</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user5} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Kiana Collins
-          </Typography>
-          <Typography variant="body1">Software Developer</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user1} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Alex Martinez
-          </Typography>
-          <Typography variant="body1">CEO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user2} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Jordan Nguyen
-          </Typography>
-          <Typography variant="body1">CTO & Co-Founder</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user3} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Taylor Roberts
-          </Typography>
-          <Typography variant="body1">Product Manager</Typography>
-        </UserBox>
-      </div>
-      <div style={slideStyle}>
-        <img src={user4} alt="user-img" width={270} height={290} style={{ borderRadius: '16px' }} />
-        <UserBox
-          bgcolor="white"
-          px="10px"
-          py="16px"
-          textAlign="center"
-          position="relative"
-          zIndex="1"
-        >
-          <Typography variant="h5" mb={1}>
-            Morgan Patel
-          </Typography>
-          <Typography variant="body1">Lead Developer</Typography>
-        </UserBox>
-      </div>
-    </Slider>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Slider {...settings} className="leadership-carousel">
+          {members.map((member, index) => (
+            <Box key={index} sx={slideStyle}>
+              <img
+                src={member.img}
+                alt={member.name}
+                width={270}
+                height={290}
+                style={{ borderRadius: '16px' }}
+              />
+              <UserBox px="10px" py="16px" textAlign="center">
+                <Typography variant="h5" mb={1}>
+                  {member.name}
+                </Typography>
+                <Typography variant="body1">{member.role}</Typography>
+              </UserBox>
+            </Box>
+          ))}
+        </Slider>
+      </Grid>
+        <Grid item xs={12}>
+        <Slider {...settings} className="leadership-carousel">
+          {members.map((member, index) => (
+            <Box key={index} sx={slideStyle}>
+              <img
+                src={member.img}
+                alt={member.name}
+                width={270}
+                height={290}
+                style={{ borderRadius: '16px' }}
+              />
+              <UserBox px="10px" py="16px" textAlign="center">
+                <Typography variant="h5" mb={1}>
+                  {member.name}
+                </Typography>
+                <Typography variant="body1">{member.role}</Typography>
+              </UserBox>
+            </Box>
+          ))}
+        </Slider>
+      </Grid>
+    </Grid>
   );
 };
 

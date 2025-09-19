@@ -44,7 +44,7 @@ const Leadership = () => {
         <LeaderShipCarousel />
       </Container>
     </Box>
-    <Contact />
+   {/*  <Contact /> */}
   </>);
 };
 

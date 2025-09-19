@@ -42,4 +42,6 @@ export default defineConfig({
     // })],
 
     plugins: [svgr(), react()],
+    base: '/' // 👈 This is like Angular's base href
+
 });

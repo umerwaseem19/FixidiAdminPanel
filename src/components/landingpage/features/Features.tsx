@@ -25,77 +25,105 @@ import {
 } from '@tabler/icons-react';
 import AnimationFadeIn from '../animation/Animation';
 
+import icon1 from 'src/assets/images/FixidiIcons/generalHandyman.svg';
+import icon2 from 'src/assets/images/FixidiIcons/tvMounting.svg';
+import icon3 from 'src/assets/images/FixidiIcons/furnitureAssembly.svg';
+import icon4 from 'src/assets/images/FixidiIcons/houseCleaning.svg';
+import icon5 from 'src/assets/images/FixidiIcons/hanging.svg';
+import icon6 from 'src/assets/images/FixidiIcons/furnitureMoving.svg';
+
+import icon7 from 'src/assets/images/FixidiIcons/hauling.svg';
+import icon8 from 'src/assets/images/FixidiIcons/lightfix.svg';
+import icon9 from 'src/assets/images/FixidiIcons/smokeDetector.svg';
+import icon10 from 'src/assets/images/FixidiIcons/gutterCleaning.svg';
+import icon11 from 'src/assets/images/FixidiIcons/gardening-machinery-svgrepo-com.svg';
+import icon12 from 'src/assets/images/FixidiIcons/lights.svg';
+
+
 interface FeaturesType {
+   id: number;
   icon: React.ReactElement;
   title: string;
   subtext: string;
 }
 
 const featuresData: FeaturesType[] = [
-  {
-    icon: <IconWand width={40} height={40} strokeWidth={1.5} />,
-    title: '6 Theme Colors',
-    subtext: 'We have included 6 pre-defined Theme Colors with Elegant Admin.',
+ {
+    id: 1,
+    title: 'Handyman',
+    icon: <img src={icon1} width={40} height={40} alt="Handyman" />,
+    subtext: 'Reliable solutions for all household fixes, big or small.',
   },
   {
-    icon: <IconShieldLock width={40} height={40} strokeWidth={1.5} />,
-    title: 'JWT + Firebase Auth',
-    subtext: 'It is JSON Object is used to securely transfer information over the web.',
+    id: 2,
+    title: 'TV Mounting',
+    icon: <img src={icon2} width={40} height={40} alt="TV Mounting" />,
+    subtext: 'Secure, stylish TV mounting with the perfect viewing angle.',
   },
   {
-    icon: <IconArchive width={40} height={40} strokeWidth={1.5} />,
-    title: '65+ Page Templates',
-    subtext: 'Yes, we have 5 demos & 65+ Pages per demo to make it easier.',
+    id: 3,
+    title: 'Assembly',
+    icon: <img src={icon3} width={40} height={40} alt="Assembly" />,
+    subtext: 'Fast, precise furniture and equipment assembly, hassle-free.',
   },
   {
-    icon: <IconAdjustments width={40} height={40} strokeWidth={1.5} />,
-    title: '45+ UI Components',
-    subtext: 'Almost 45+ UI Components being given with Modernize Admin Pack.',
+    id: 4,
+    title: 'Cleaning',
+    icon: <img src={icon4} width={40} height={40} alt="Cleaning" />,
+    subtext: 'Spotless, stress-free cleaning for homes and offices.',
   },
   {
-    icon: <IconPresentation width={40} height={40} strokeWidth={1.5} />,
-    title: '4+ Frontend Pages',
-    subtext: 'We have added useful frontend pages with Modernize Admin',
+    id: 5,
+    title: 'Hauling',
+    icon: <img src={icon7} width={40} height={40} alt="Hauling" />,
+    subtext: 'Quick, eco-friendly junk and debris removal made easy.',
   },
   {
-    icon: <IconTag width={40} height={40} strokeWidth={1.5} />,
-    title: 'Material Ui',
-    subtext: 'Its been made with Material Ui and full responsive layout.',
+    id: 6,
+    title: 'Hanging',
+    icon: <img src={icon5} width={40} height={40} alt="Hanging" />,
+    subtext: 'Professional hanging for frames, mirrors, curtains, and more.',
   },
   {
-    icon: <IconTable width={40} height={40} strokeWidth={1.5} />,
-    title: 'React Table',
-    subtext: 'Supercharge your tables or build a datagrid from scratch for TS/JS React.',
+    id: 7,
+    title: 'Lighting',
+    icon: <img src={icon8} width={40} height={40} alt="Lighting" />,
+    subtext: 'Safe, stylish lighting installations to brighten your space.',
   },
   {
-    icon: <IconDiamond width={40} height={40} strokeWidth={1.5} />,
-    title: '3400+ Font Icons',
-    subtext: 'Lots of Icon Fonts are included here in the package of Elegant Admin.',
+    id: 8,
+    title: 'Moving',
+    icon: <img src={icon6} width={40} height={40} alt="Moving" />,
+    subtext: 'Stress-free moving with careful packing and reliable transport.',
   },
   {
-    icon: <IconDatabase width={40} height={40} strokeWidth={1.5} />,
-    title: 'Axios',
-    subtext: 'Axios is a promise-based HTTP Client for node.js and the browser.',
+    id: 9,
+    title: 'Gutterworks',
+    icon: <img src={icon10} width={40} height={40} alt="Gutterworks" />,
+    subtext: 'Trusted gutter cleaning, repair, and installation services.',
   },
   {
+    id: 10,
+    title: 'Decorating',
+    icon: <img src={icon12} width={40} height={40} alt="Decorating" />,
+    subtext: 'Creative decorating that adds style and personality to any space.',
+  },
+  {
+    id: 11,
+    title: 'Landscaping',
+    icon: <img src={icon11} width={40} height={40} alt="Landscaping" />,
+    subtext: 'Beautiful, affordable landscaping for lawns and gardens.',
+  },
+  {
+    id: 12,
+    title: 'Detectors',
+    icon: <img src={icon9} width={40} height={40} alt="Detectors" />,
+    subtext: 'Expert smoke & CO detector installation for peace of mind.',
+  },
+ /*  {
     icon: <IconLanguageKatakana width={40} height={40} strokeWidth={1.5} />,
     title: 'i18 React',
     subtext: 'react-i18 is a powerful internationalization framework for React.',
-  },
-  {
-    icon: <IconBuildingCarousel width={40} height={40} strokeWidth={1.5} />,
-    title: 'Slick Carousel',
-    subtext: 'The Last React Carousel You will Ever Need!',
-  },
-  {
-    icon: <IconArrowsShuffle width={40} height={40} strokeWidth={1.5} />,
-    title: 'Easy to Customize',
-    subtext: 'Customization will be easy as we understand your pain.',
-  },
-  {
-    icon: <IconChartPie width={40} height={40} strokeWidth={1.5} />,
-    title: 'Lots of Chart Options',
-    subtext: 'You name it and we have it, Yes lots of variations for Charts.',
   },
   {
     icon: <IconLayersIntersect width={40} height={40} strokeWidth={1.5} />,
@@ -121,7 +149,7 @@ const featuresData: FeaturesType[] = [
     icon: <IconMessages width={40} height={40} strokeWidth={1.5} />,
     title: 'Dedicated Support',
     subtext: 'We believe in supreme support is key and we offer that.',
-  },
+  }, */
 ];
 
 const Features = () => {
