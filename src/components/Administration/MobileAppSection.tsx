@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import DesignCol from 'src/assets/images/FixidiImages/Gemini_Generated_Image_lzfrozlzfrozlzfre.png';
-import   LogoLight from './Fixidi SVG.svg';
+import   LogoLight from './Fixidi.svg';
 function MobileAppSection() {
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
   const smUp = useMediaQuery((theme: any) => theme.breakpoints.only('sm'));
