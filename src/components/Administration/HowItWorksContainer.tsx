@@ -15,8 +15,10 @@ function HowItWorksContainer() {
         },
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={3} alignItems="center" justifyContent="center">
+      <Container sx={{
+        maxWidth: '1400px !important'
+      }}>
+      {/*   <Grid container spacing={3} alignItems="center" justifyContent="center">
           <Grid
             size={{
               xs: 12,
@@ -26,7 +28,7 @@ function HowItWorksContainer() {
               textAlign="center"
               variant="h4"
               lineHeight={1.4}
-              mb={6}
+              mb={2}
               fontWeight={700}
               sx={{
                 fontSize: {
@@ -38,7 +40,7 @@ function HowItWorksContainer() {
               How it works
             </Typography>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <HowItWorks />
 

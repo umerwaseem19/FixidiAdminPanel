@@ -19,7 +19,7 @@ const BlankCard = ({ children, className, sx }: Props) => {
 
   return (
     <Card
-      sx={{ p: 0, border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none', position: 'relative', sx }}
+      sx={{ p: 0, border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none', position: 'relative', sx, borderRadius:"7%" }}
       className={className}
       elevation={customizer.isCardShadow ? 9 : 0}
       variant={!customizer.isCardShadow ? 'outlined' : undefined}

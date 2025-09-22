@@ -167,137 +167,110 @@ const FixidiLandingPage = () => {
           })
         }
       />
-      <Box bgcolor="primary.light" pt={7} py={6}>
-        {/* <Container
-          sx={{
-            maxWidth: '1400px !important',
-            position: 'relative',
-          }}
-        > */}<Container maxWidth="lg">
-          <FeaturesTitle />
-          <Grid container spacing={3} justifyContent="center" mb={4}>
-            <Grid
-              textAlign="center"
-              size={{
-                xs: 12,
-                md: 10,
-                lg: 7,
-              }}
-            >
-              <Stack>
-                <Autocomplete
-                  id="free-solo-demo"
-                  freeSolo
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  options={houseServices.map((option) => option.title)}
-                  onChange={(_, newValue) => {
-                    if (newValue) {
-                      setSelectedService(newValue); // ✅ Correct
-                      handleButtonClick(newValue, 'client');
-                    }
-                  }}
-                  renderInput={(params) => (
-                    <CustomTextField
-                      {...params}
-                      placeholder="Tell us what you’re looking for."
-                      aria-label="FreeSolo"
-                    />
-                  )}
-                />
-              </Stack>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3} justifyContent="center">
-            <Grid
-              textAlign="center"
-              size={{
-                xs: 12,
-                lg: 12,
-              }}
-            >
-              <AnimationFadeIn>
-                <>
-                   <Grid container spacing={3} justifyContent="center">
-                    {Frameworks.slice(0, 12).map((fw, index) => (
-                      <Grid
-                        textAlign="center"
-                        key={index}
-                        size={{
-                          xs: 12,
-                          sm: 4,
-                          lg: 2,
-                        }}
-                        width="200px"
-                        height="200px"
-                        display="flex"
-                        sx={{
-    cursor: 'pointer',
-    borderRadius: '16px',
-    border: '1px solid transparent', // default transparent border to prevent layout shift
-    transition: 'all 0.3s ease',     // smooth transition
-    '&:hover': {
-      border: '1px solid #1976d2',   // MUI primary blue (or any color you like)
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)', // optional shadow on hover
-    },
-  }}
-                        spacing={3}
-                        alignItems="center"
-                        justifyContent="space-around"
-                        flexDirection="column"
-                        borderRadius="16px"
-                        onClick={() => handleButtonClick(fw.name, 'client')}
-                      >
-                        <img
-                          src={fw.icon}
-                          alt={fw.icon}
-                          width={50}
-                          height={70}
-                          style={{ fill: '#8A8D8C', padding:"5px" }}
-                        />
-                        {/*    <b>{fw.name}</b> */}
-                        <Typography variant="h5" mt={3}>
-                          {fw.name}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary" mt={1} mb={3}>
-                          {fw.subtext}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
+   <Box bgcolor="primary.light" py={{ xs: 6, md: 10 }}>
+      <Container maxWidth="lg">
+        {/* Title */}
+       <FeaturesTitle/>
 
-                  {/*  <Stack direction="row" flexWrap="wrap" justifyContent="center" mb={2}>
-                  {Frameworks.slice(6, 12).map((fw) => (
-                    <Box
-                      width="120px"
-                      height="100px"
-                      display="flex"
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                      alignItems="center"
-                      justifyContent="space-around"
-                      flexDirection="column"
-                      borderRadius="16px"
-                      onClick={() => handleButtonClick(fw.name, 'client')}
-                    >
-                      <img
-                        src={fw.icon}
-                        alt={fw.icon}
-                        width={50}
-                        height={70}
-                        style={{ fill: '#4570EA' }}
-                      />
-                      <b>{fw.name}</b>
-                    </Box>
-                  ))}
-                </Stack> */}
-                </>
-              </AnimationFadeIn>
-            </Grid>
+        {/* Autocomplete */}
+        <Grid container justifyContent="center" mb={6}>
+          <Grid
+            size={{
+              xs: 12,
+              md: 10,
+              lg: 8,
+            }}
+          >
+            <Autocomplete
+              id="framework-search"
+              freeSolo
+              fullWidth
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '16px',
+                  fontSize: '1.1rem',
+                  padding: '14px',
+                },
+              }}
+              options={houseServices.map((option) => option.title)}
+              onChange={(_, newValue) => {
+                if (newValue) {
+                  setSelectedService(newValue);
+                  handleButtonClick(newValue, 'client');
+                }
+              }}
+              renderInput={(params) => (
+                <CustomTextField
+                  {...params}
+                  placeholder="🔍 Tell us what you’re looking for..."
+                  aria-label="framework-search"
+                />
+              )}
+            />
           </Grid>
-        </Container>
-      </Box>
+        </Grid>
+
+        {/* Framework Cards */}
+        <AnimationFadeIn>
+          <Grid container spacing={4} justifyContent="center">
+            {Frameworks.slice(0, 12).map((fw, index) => (
+              <Grid
+                key={index}
+                size={{
+                  xs: 12,
+                  sm: 6,
+                  md: 4,
+                  lg: 3, // ✅ 4 per row on large screens
+                }}
+              >
+                <Box
+                  onClick={() => handleButtonClick(fw.name, 'client')}
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="flex-start"
+                  textAlign="center"
+                  height="100%"
+                  p={3}
+                  borderRadius="20px"
+                  bgcolor="background.paper"
+                  sx={{
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid transparent',
+                    '&:hover': {
+                      border: '1px solid #1976d2',
+                      boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
+                      transform: 'translateY(-4px)',
+                    },
+                  }}
+                >
+                  <img
+                    src={fw.icon}
+                    alt={fw.name}
+                    width={60}
+                    height={70}
+                    style={{ marginBottom: '12px' }}
+                  />
+                  <Typography variant="h6" fontWeight={600}>
+                    {fw.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    mt={1}
+                    sx={{ minHeight: 40 }}
+                  >
+                    {fw.subtext}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </AnimationFadeIn>
+      </Container>
+    </Box>
      {/*  <DefendFocus />
       <Leadership />
       <PowerfulDozens />
